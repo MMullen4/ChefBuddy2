@@ -4,6 +4,7 @@ const typeDefs = `
     name: String
     email: String
     password: String
+    skills: [String]!
   }
 
   type Auth {
@@ -26,7 +27,7 @@ const typeDefs = `
   type Mutation {
     addProfile(input: ProfileInput!): Auth
     login(email: String!, password: String!): Auth
-
+    removeProfile: Profile
   }
 `;
 
