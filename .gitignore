@@ -35,3 +35,4 @@ tmp
 .env
 # Ignore coverage reports
 coverage
+dist
