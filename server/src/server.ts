@@ -1,20 +1,20 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import path from 'node:path';
-import type { Request, Response } from 'express';
-import db from './config/connection.js'
-import { ApolloServer } from '@apollo/server';// Note: Import from @apollo/server-express
+import dotenv from 'dotenv';
+import cors from 'cors';
+import db from './config/connection.js';
+import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { typeDefs, resolvers } from './schemas/index.js';
 import { authenticateToken } from './utils/auth.js';
-import { OpenAI } from 'openai';
+import recipeRoutes from './api/recipes.js';
+import historyRoutes from './api/history.js';
+
+dotenv.config();
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
-});
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  resolvers,
 });
 
 const startApolloServer = async () => {
@@ -24,49 +24,25 @@ const startApolloServer = async () => {
   const PORT = process.env.PORT || 3001;
   const app = express();
 
+  app.use(cors());
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
-  app.post('/api/recipes', async (req: Request, res: Response) => {
-    const { ingredients } = req.body;
-    
-    if (!Array.isArray(ingredients) || ingredients.length === 0) {
-      return res.status(400).json({ error: 'Please provide a list of ingredients.' });
-    }
-   
-    try {
-      const prompt = `
-      Suggest a list of recipes based on the following ingredients: ${ingredients.join(', ')}.
-      Please provide the recipes in JSON format, including the recipe name, ingredients, measurements and instructions.
-      `;
+  // ✅ Mount REST API route
+  app.use('/api/recipes', recipeRoutes);
+  app.use('/api/history', historyRoutes);
 
-      const response = await openai.chat.completions.create({
-        model: 'gpt-4',
-        messages: [
-          {
-            role: 'user',
-            content: prompt,
-          },
-        ],
-    });
+  // ✅ GraphQL setup
+  app.use(
+    '/graphql',
+    expressMiddleware(server as any, {
+      context: authenticateToken as any,
+    })
+  );
 
-    const result = response.choices[0].message?.content;
-    res.json({ recipes: result });
-    } catch (error) {
-      console.error('Error generating recipes:', error);
-      res.status(500).json({ error: 'An error occurred while generating recipes.' });
-    }
-  });
-
-  app.use('/graphql', expressMiddleware(server as any,
-    {
-      context: authenticateToken as any
-    }
-  ));
-
+  // ✅ Serve frontend in production
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/dist')));
-
     app.get('*', (_req: Request, res: Response) => {
       res.sendFile(path.join(__dirname, '../client/dist/index.html'));
     });
@@ -74,7 +50,7 @@ const startApolloServer = async () => {
 
   app.listen(PORT, () => {
     console.log(`API server running on port ${PORT}!`);
-    console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+    console.log(`GraphQL at http://localhost:${PORT}/graphql`);
   });
 };
 
