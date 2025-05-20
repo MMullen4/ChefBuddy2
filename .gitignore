@@ -17,6 +17,7 @@ build
 out
 # node_modules
 node_modules
+/node_modules
 # Editor and IDE files
 .vscode/*
 !.vscode/extensions.json
