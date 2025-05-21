@@ -1,6 +1,6 @@
-import express, { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { authenticateToken } from '../utils/auth.js';
-import RecipeHistory from '../models/recipeHistory.js';
+import RecipeHistory from '../models/RecipeHistory.js';
 import router from './recipes.js';
 
 router.get('/api/history', authenticateToken, async (req: Request, res: Response) => {
@@ -26,9 +26,9 @@ router.patch('/api/history/:id/favorite', authenticateToken, async (req: Request
       );
   
       if (!recipe) return res.status(404).json({ error: 'Recipe not found or unauthorized.' });
-      res.json(recipe);
-    } catch {
-      res.status(500).json({ error: 'Could not update favorite.' });
+      return res.json(recipe);
+    } catch (error) {
+      return res.status(500).json({ error: 'Could not update favorite.' });
     }
   });
 

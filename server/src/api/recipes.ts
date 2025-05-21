@@ -1,7 +1,7 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import { OpenAI } from 'openai';
-import recipeHistory from '../models/recipeHistory.js';
+import recipeHistory from '../models/RecipeHistory.js';
 
 const router = express.Router();
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
@@ -31,10 +31,10 @@ router.post('/', async (req: Request, res: Response) => {
       response: result,
     });
 
-    res.json({ recipes: result });
+    return res.json({ recipes: result });
   } catch (error) {
     console.error('Error generating recipes:', error);
-    res.status(500).json({ error: 'An error occurred while generating recipes.' });
+    return res.status(500).json({ error: 'An error occurred while generating recipes.' });
   }
 });
 
