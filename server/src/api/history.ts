@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { authenticateToken } from '../utils/auth.js';
-import RecipeHistory from '../models/recipeHistory.js';
+import RecipeHistory from '../models/RecipeHistory.js';
 import router from './recipes.js';
 
 router.get('/api/history', authenticateToken, async (req: Request, res: Response) => {
