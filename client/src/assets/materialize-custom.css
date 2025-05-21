@@ -1,0 +1,498 @@
+/*==============================================================================
+  MATERIALIZE CUSTOM CSS
+  Custom Materialize theme with yellow accent-2 #ffff00 and deep-orange #ff5722
+==============================================================================*/
+
+/*==============================================================================
+  1. COLOR DEFINITIONS
+==============================================================================*/
+
+/* Primary color: deep-orange #ff5722 */
+.deep-orange {
+  background-color: #ff5722 !important;
+}
+.deep-orange-text {
+  color: #ff5722 !important;
+}
+
+/* Accent color: yellow accent-2 #ffff00 */
+.yellow.accent-2 {
+  background-color: #ffff00 !important;
+}
+.yellow-text.text-accent-2 {
+  color: #ffff00 !important;
+}
+
+/*==============================================================================
+  2. ANIMATED GRADIENT BACKGROUND
+==============================================================================*/
+
+/* Solid Gray Background */
+.gradient-background {
+  background-color: #e0e0e0;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Removed before and after pseudo-elements with animations */
+
+/* Animated Gradient for Nav and Footer */
+.nav-gradient {
+  background: linear-gradient(135deg, 
+    #ff5722, #ff7043, #ff8a65, #ff7043, #ff5722,
+    #e64c66, #ff5722
+  );
+  background-size: 300% 300%;
+  animation: gradient-animation 8s ease infinite;
+  box-shadow: 0 2px 12px rgba(255, 87, 34, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-gradient::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, 
+    rgba(255, 255, 255, 0), 
+    rgba(255, 255, 255, 0.3), 
+    rgba(255, 255, 255, 0)
+  );
+  filter: blur(5px);
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+  animation: nav-glow 4s ease-in-out infinite;
+}
+
+.footer-gradient {
+  background: linear-gradient(135deg, 
+    #ff5722, #ff7043, #ff8a65, #ff7043, #ff5722,
+    #e64c66, #ff5722
+  );
+  background-size: 300% 300%;
+  animation: gradient-animation 8s ease infinite;
+  box-shadow: 0 -2px 12px rgba(255, 87, 34, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-gradient::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, 
+    rgba(255, 255, 255, 0), 
+    rgba(255, 255, 255, 0.3), 
+    rgba(255, 255, 255, 0)
+  );
+  filter: blur(5px);
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+  animation: footer-glow 4s ease-in-out infinite;
+}
+
+/* Animations for nav and footer elements only */
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes nav-glow {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes footer-glow {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+/*==============================================================================
+  3. COMPONENTS
+==============================================================================*/
+
+/*------------------------------------------------------------------------------
+  3.1 BUTTONS
+------------------------------------------------------------------------------*/
+
+/* Custom Button Styles */
+.btn, .btn-large, .btn-small {
+  background-color: #ff5722;
+  box-shadow: 0 2px 5px rgba(255, 87, 34, 0.3);
+  transition: all 0.3s ease;
+}
+.btn:hover, .btn-large:hover, .btn-small:hover {
+  background-color: #ff7043;
+  box-shadow: 0 4px 8px rgba(255, 87, 34, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Custom accent buttons */
+.btn.accent, .btn-large.accent, .btn-small.accent {
+  background-color: #ffff00;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(255, 255, 0, 0.3);
+}
+.btn.accent:hover, .btn-large.accent:hover, .btn-small.accent:hover {
+  background-color: #ffff8d;
+  box-shadow: 0 4px 8px rgba(255, 255, 0, 0.5);
+  transform: translateY(-2px);
+}
+
+/*------------------------------------------------------------------------------
+  3.2 NAVIGATION & FOOTER
+------------------------------------------------------------------------------*/
+
+/* Nav and Footer */
+nav, .page-footer {
+  background-color: #ff5722;
+  box-shadow: 0 2px 10px rgba(255, 87, 34, 0.4);
+}
+
+nav .brand-logo {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+nav ul a:hover {
+  background-color: rgba(255, 255, 0, 0.15);
+  transition: background-color 0.3s ease;
+}
+
+.page-footer {
+  border-top: 3px solid #ffff00;
+}
+
+/*------------------------------------------------------------------------------
+  3.3 ACCENTS & CARDS
+------------------------------------------------------------------------------*/
+
+/* Accent elements */
+.accent-elements {
+  border-color: #ffff00 !important;
+  color: #ff5722 !important;
+}
+
+/* Card styling */
+.card {
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card .card-content {
+  border: 2px solid #ff0000;
+  border-radius: 6px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card .card-action a {
+  color: #ff5722 !important;
+}
+
+.card .card-action a:hover {
+  color: #ff7043 !important;
+  text-decoration: underline;
+}
+
+/*------------------------------------------------------------------------------
+  3.4 NAVIGATION
+------------------------------------------------------------------------------*/
+
+/* Nav Link Hover Effects */
+.nav-wrapper ul li a {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-wrapper ul li a:before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #ffff00;
+  transition: width 0.3s ease;
+}
+
+.nav-wrapper ul li a:hover:before {
+  width: 100%;
+}
+
+.nav-wrapper ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-wrapper .brand-logo {
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer Link Effects */
+.page-footer a {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.page-footer a:hover {
+  color: #ffff00 !important;
+  text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
+}
+
+.footer-copyright {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/*------------------------------------------------------------------------------
+  3.5 PAGE LAYOUT
+------------------------------------------------------------------------------*/
+
+/* Main content area */
+main.container {
+  flex: 1 0 auto;
+  position: relative;
+  z-index: 1;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* Footer positioning */
+footer.page-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+  position: relative;
+  z-index: 2;
+}
+
+/*------------------------------------------------------------------------------
+  3.6 CARDS
+------------------------------------------------------------------------------*/
+
+/* Card hover effects */
+.card {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(255, 87, 34, 0.2) !important;
+}
+
+.card .card-content .card-title.deep-orange-text {
+  font-weight: 500;
+  position: relative;
+  display: inline-block;
+}
+
+.card .card-content .card-title.deep-orange-text:after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(90deg, #ff5722, #ff7043, #ff8a65);
+}
+
+/*==============================================================================
+  4. FORM ELEMENTS
+==============================================================================*/
+
+/*------------------------------------------------------------------------------
+  4.1 INPUTS
+------------------------------------------------------------------------------*/
+
+/* Form focus colors */
+input:not([type]):focus:not([readonly]),
+input[type=text]:focus:not([readonly]),
+input[type=password]:focus:not([readonly]),
+input[type=email]:focus:not([readonly]),
+input[type=url]:focus:not([readonly]),
+input[type=time]:focus:not([readonly]),
+input[type=date]:focus:not([readonly]),
+input[type=datetime]:focus:not([readonly]),
+input[type=datetime-local]:focus:not([readonly]),
+input[type=tel]:focus:not([readonly]),
+input[type=number]:focus:not([readonly]),
+input[type=search]:focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]) {
+  border-bottom: 2px solid #ff5722 !important;
+  box-shadow: 0 1px 0 0 #ff5722 !important;
+}
+
+/* Label color */
+.input-field label {
+  color: #757575;
+}
+
+/* Label focus color */
+.input-field input:focus + label,
+.input-field textarea:focus + label {
+  color: #ff5722 !important;
+}
+
+/*------------------------------------------------------------------------------
+  4.2 SELECTION ELEMENTS
+------------------------------------------------------------------------------*/
+
+/* Checkbox and Radio styles */
+[type="checkbox"]:checked + span:not(.lever)::before {
+  border-right: 2px solid #ff5722;
+  border-bottom: 2px solid #ff5722;
+}
+
+[type="radio"]:checked + span::after {
+  background-color: #ff5722;
+}
+
+/* Switch */
+.switch label input[type=checkbox]:checked + .lever {
+  background-color: #ffff8d;
+}
+.switch label input[type=checkbox]:checked + .lever::after {
+  background-color: #ffff00;
+}
+
+/*==============================================================================
+  5. UI COMPONENTS
+==============================================================================*/
+
+/*------------------------------------------------------------------------------
+  5.1 COLLECTIONS & DROPDOWNS
+------------------------------------------------------------------------------*/
+
+/* Collection items */
+.collection .collection-item.active {
+  background-color: #ff5722;
+  color: #fff;
+}
+
+/* Dropdown */
+.dropdown-content li > a, 
+.dropdown-content li > span {
+  color: #ff5722;
+}
+
+/*------------------------------------------------------------------------------
+  5.2 TABS & BADGES
+------------------------------------------------------------------------------*/
+
+/* Tabs */
+.tabs .tab a {
+  color: rgba(255, 87, 34, 0.7);
+}
+
+.tabs .tab a:hover,
+.tabs .tab a.active {
+  color: #ff5722;
+}
+
+.tabs .indicator {
+  background-color: #ff5722;
+}
+
+/* Badges */
+span.badge.new {
+  background-color: #ffff00;
+  color: #333;
+}
+
+/*------------------------------------------------------------------------------
+  5.3 FEEDBACK & LOADERS
+------------------------------------------------------------------------------*/
+
+/* Toast */
+.toast {
+  background-color: #ff5722;
+}
+
+/* Preloader */
+.spinner-layer {
+  border-color: #ff5722;
+}
+
+/* Progress bar */
+.progress .determinate,
+.progress .indeterminate {
+  background-color: #ff5722;
+}
+
+/*==============================================================================
+  6. UTILITY CLASSES
+==============================================================================*/
+
+/* Highlight text selection */
+::selection {
+  background: rgba(255, 255, 0, 0.5);
+  color: #333;
+}
+
+/* Custom utility classes for the theme */
+.primary-border {
+  border: 2px solid #ff5722 !important;
+}
+
+.accent-border {
+  border: 2px solid #ffff00 !important;
+}
+
+.theme-shadow {
+  box-shadow: 0 4px 10px rgba(255, 87, 34, 0.3) !important;
+}
+
+/* Minimum height for full page content */
+.min-100-vh {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+  padding: 20px 0;
+}
