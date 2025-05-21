@@ -1,8 +1,7 @@
-import { useState, type FormEvent, type ChangeEvent } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
-
 import Auth from '../utils/auth';
 
 const Login = () => {
@@ -10,8 +9,8 @@ const Login = () => {
   const [login, { error, data }] = useMutation(LOGIN_USER);
 
   // update state based on form input changes
-  const handleChange = (event: ChangeEvent) => {
-    const { name, value } = event.target as HTMLInputElement;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
 
     setFormState({
       ...formState,
@@ -20,9 +19,9 @@ const Login = () => {
   };
 
   // submit form
-  const handleFormSubmit = async (event: FormEvent) => {
+  const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(formState);
+    
     try {
       const { data } = await login({
         variables: { ...formState },
@@ -41,37 +40,44 @@ const Login = () => {
   };
 
   return (
-    <main className="flex-row justify-center mb-4">
-      <div className="col-12 col-lg-10">
+    <div className="row">
+      <div className="col s12 m6 offset-m3">
         <div className="card">
-          <h4 className="card-header bg-dark text-light p-2">Login</h4>
-          <div className="card-body">
+          <div className="card-content">
+            <span className="card-title deep-orange-text">Login</span>
             {data ? (
               <p>
-                Success! You may now head{' '}
-                <Link to="/">back to the homepage.</Link>
+                Success! You are now logged in.{' '}
+                <Link to="/">Go to Home</Link>
               </p>
             ) : (
               <form onSubmit={handleFormSubmit}>
-                <input
-                  className="form-input"
-                  placeholder="Your email"
-                  name="email"
-                  type="email"
-                  value={formState.email}
-                  onChange={handleChange}
-                />
-                <input
-                  className="form-input"
-                  placeholder="******"
-                  name="password"
-                  type="password"
-                  value={formState.password}
-                  onChange={handleChange}
-                />
+                <div className="input-field">
+                  <input
+                    className="validate"
+                    placeholder="Your email"
+                    name="email"
+                    type="email"
+                    value={formState.email}
+                    onChange={handleChange}
+                    required
+                  />
+                  <label htmlFor="email" className="active">Email</label>
+                </div>
+                <div className="input-field">
+                  <input
+                    className="validate"
+                    placeholder="******"
+                    name="password"
+                    type="password"
+                    value={formState.password}
+                    onChange={handleChange}
+                    required
+                  />
+                  <label htmlFor="password" className="active">Password</label>
+                </div>
                 <button
-                  className="btn btn-block btn-info"
-                  style={{ cursor: 'pointer' }}
+                  className="btn waves-effect waves-light deep-orange"
                   type="submit"
                 >
                   Submit
@@ -80,14 +86,19 @@ const Login = () => {
             )}
 
             {error && (
-              <div className="my-3 p-3 bg-danger text-white">
+              <div className="card-panel red lighten-4 red-text text-darken-4 my-3">
                 {error.message}
               </div>
             )}
           </div>
+          <div className="card-action">
+            <p>
+              Don't have an account? <Link to="/signup">Signup</Link>
+            </p>
+          </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 
