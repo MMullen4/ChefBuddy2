@@ -1,6 +1,7 @@
 
 const Home = () => {
   return (
+    <main className="home-container">
     <div className="section">
       <div className="row">
         <div className="col s12">
@@ -40,6 +41,7 @@ const Home = () => {
         </div>
       </div>
     </div>
+    </main>
   );
 };
 

@@ -40,8 +40,9 @@ const Login = () => {
   };
 
   return (
+    <main className="login-container">
     <div className="row">
-      <div className="col s12 m6 offset-m3">
+      <div className="col s12 m9 offset-m2">
         <div className="card">
           <div className="card-content">
             <span className="card-title deep-orange-text">Login</span>
@@ -99,6 +100,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    </main>
   );
 };
 
