@@ -9,27 +9,19 @@ import './assets/materialize-custom.css';
 
 import App from './App';
 import Home from './pages/Home';
-import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import Error from './pages/Error';
+
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <Error />,
     children: [
       {
         index: true,
         element: <Home />
-      }, {
-        path: '/profiles/:profileId',
-        element: <Profile />
-      }, {
-        path: '/me',
-        element: <Profile />
-      }, {
+      },{
         path: '/login',
         element: <Login />
       }, {
