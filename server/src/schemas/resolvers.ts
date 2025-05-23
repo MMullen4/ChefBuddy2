@@ -1,6 +1,5 @@
 import { Profile } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
-
 interface Profile {
   _id: string;
   name: string;
@@ -8,11 +7,9 @@ interface Profile {
   password: string;
   skills: string[];
 }
-
 interface ProfileArgs {
   profileId: string;
 }
-
 interface AddProfileArgs {
   input:{
     name: string;
@@ -20,11 +17,9 @@ interface AddProfileArgs {
     password: string;
   }
 }
-
 interface Context {
   user?: Profile;
 }
-
 const resolvers = {
   Query: {
     profiles: async (): Promise<Profile[]> => {
@@ -43,7 +38,7 @@ const resolvers = {
   Mutation: {
     addProfile: async (_parent: any, { input }: AddProfileArgs): Promise<{ token: string; profile: Profile }> => {
       const profile = await Profile.create({ ...input });
-      const token = signToken(profile.name, profile.email, profile._id);
+      const token = signToken({ _id: profile._id, email: profile.email, username: profile.name });
       return { token, profile };
     },
     login: async (_parent: any, { email, password }: { email: string; password: string }): Promise<{ token: string; profile: Profile }> => {
@@ -55,17 +50,15 @@ const resolvers = {
       if (!correctPw) {
         throw AuthenticationError;
       }
-      const token = signToken(profile.name, profile.email, profile._id);
+      const token = signToken({ _id: profile._id, email: profile.email, username: profile.name });
       return { token, profile };
     },
-
     removeProfile: async (_parent: any, _args: any, context: Context): Promise<Profile | null> => {
       if (context.user) {
         return await Profile.findOneAndDelete({ _id: context.user._id });
       }
       throw AuthenticationError;
     },
-    
   },
 };
 
