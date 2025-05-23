@@ -1,4 +1,4 @@
-const { gql } = require("apollo-server-express");
+import gql from 'graphql-tag';
 
 const typeDefs = gql`
   type User {
@@ -28,7 +28,15 @@ const typeDefs = gql`
     user: User
   }
 
+  input ProfileInput {
+    name: String!
+    email: String!
+    password: String!
+  }
+
   type Query {
+    profiles: [User]
+    profile(profileId: ID!): User
     me: User
     getRecipeById(id: ID!): Recipe
     getRecipeByIngredient(ingredient: String!): [Recipe]
@@ -38,7 +46,9 @@ const typeDefs = gql`
   login(email: String!, password: String!): Auth
   register(username: String!, email: String!, password: String!): Auth
   saveRecipe(recipeId: ID!): User
-  rateRecipe(recipeId!, rating: Int!): Recipe
+  rateRecipe(recipeId: ID!, rating: Int!): Recipe
+  addProfile(input: ProfileInput!): Auth
+  removeProfile: User
   }
 `;
 
