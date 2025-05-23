@@ -40,6 +40,7 @@ const Signup = () => {
   };
 
   return (
+    <main className="signup-container">
     <div className="row">
       <div className="col s12 m6 offset-m3">
         <div className="card">
@@ -111,6 +112,7 @@ const Signup = () => {
         </div>
       </div>
     </div>
+    </main>
   );
 };
 

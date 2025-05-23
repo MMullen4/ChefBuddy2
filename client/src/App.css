@@ -1162,6 +1162,7 @@ a:hover {
 ------------------------------------------------------------------------------*/
 
 .card {
+  opacity: 0.9;
   border: 1px solid #1a1a1a;
   margin-bottom: 1rem;
 }
@@ -1425,7 +1426,52 @@ label form [type='radio'] {
   flex: 0 0 100%;
   max-width: 100%;
 }
+.home-container {
+    background-image: url("./assets/images/ChefBuddy.png") ;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-repeat: no-repeat;
+}
+.login-container {
+    background-image: url("./assets/images/ChefIcon1.png") ;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-repeat: no-repeat;
+}
+.signup-container {
+    background-image: url("./assets/images/ChefIcon1.png") ;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-repeat: no-repeat;
+}
 
+@media (min-width: 1368px ){ 
+    .home-container {
+    background-size: contain; 
+    }
+}
+@media (min-width: 1368px ){ 
+    .login-container {
+    background-size: contain; 
+    }
+}
+@media (min-width: 1368px ){ 
+    .signup-container {
+    background-size: contain; 
+    }
+}
 /* col-sm */
 @media screen and (min-width: 640px) {
   .col-sm-auto {
