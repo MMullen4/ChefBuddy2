@@ -1353,6 +1353,7 @@ label form [type='radio'] {
   flex-direction: row;
   margin-left: -15px;
   margin-right: -15px;
+  margin-bottom: 25rem;
 }
 
 [class*='col-'] {
@@ -1433,7 +1434,7 @@ label form [type='radio'] {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     background-repeat: no-repeat;
 }
 .login-container {
@@ -1846,4 +1847,7 @@ label form [type='radio'] {
   .align-content-center-xl {
     align-content: center;
   }
+}
+.login-card {
+  width: 100%;
 }
