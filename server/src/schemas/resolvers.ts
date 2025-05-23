@@ -1,5 +1,9 @@
 import { Profile } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
+import { IResolvers } from '@graphql-tools/utils';
+import { AuthRequest } from '../utils/auth'
+import  Recipe from '../models/recipeModel';
+
 interface Profile {
   _id: string;
   name: string;
@@ -7,57 +11,55 @@ interface Profile {
   password: string;
   skills: string[];
 }
-interface ProfileArgs {
-  profileId: string;
-}
-interface AddProfileArgs {
-  input:{
-    name: string;
-    email: string;
-    password: string;
-  }
-}
-interface Context {
-  user?: Profile;
-}
-const resolvers = {
+
+const resolvers: IResolvers = {
   Query: {
-    profiles: async (): Promise<Profile[]> => {
-      return await Profile.find();
+    me: async (_, __, context: { req: AuthRequest }) => {
+      if (!context.req.user) throw new AuthenticationError('Not authenticated');
+      return await Profile.findById(context.req.user._id).populate('savedRecipes');
     },
-    profile: async (_parent: any, { profileId }: ProfileArgs): Promise<Profile | null> => {
-      return await Profile.findOne({ _id: profileId });
-    },
-    me: async (_parent: any, _args: any, context: Context): Promise<Profile | null> => {
-      if (context.user) {
-        return await Profile.findOne({ _id: context.user._id });
-      }
-      throw AuthenticationError;
-    },
+    getRecipeById: async (_, { id }) => {
+      return await Recipe.findById(id);
+    }
   },
+    
   Mutation: {
-    addProfile: async (_parent: any, { input }: AddProfileArgs): Promise<{ token: string; profile: Profile }> => {
-      const profile = await Profile.create({ ...input });
-      const token = signToken({ _id: profile._id, email: profile.email, username: profile.name });
-      return { token, profile };
-    },
-    login: async (_parent: any, { email, password }: { email: string; password: string }): Promise<{ token: string; profile: Profile }> => {
+
+    login: async (_, { email, password }) => {
       const profile = await Profile.findOne({ email });
-      if (!profile) {
-        throw AuthenticationError;
-      }
-      const correctPw = await profile.isCorrectPassword(password);
-      if (!correctPw) {
-        throw AuthenticationError;
+      if (!profile || !(await profile.isCorrectPassword(password))) {
+        throw new AuthenticationError('Incorrect credentials');
       }
       const token = signToken({ _id: profile._id, email: profile.email, username: profile.name });
       return { token, profile };
+    }, 
+
+    register: async (_, { username, email, password }) => {
+      const profile = await Profile.create({ username, email, password });
+      const token = signToken({ _id: profile._id, email: profile.email, username: profile.name });
+      return { token, profile };
     },
-    removeProfile: async (_parent: any, _args: any, context: Context): Promise<Profile | null> => {
-      if (context.user) {
-        return await Profile.findOneAndDelete({ _id: context.user._id });
-      }
-      throw AuthenticationError;
+
+    saveRecipe: async (_, { recipeId }, context: { req: AuthRequest }) => {
+      if (!context.req.user) throw new AuthenticationError('Not authenticated');
+
+      return await Profile.findByIdAndUpdate(
+        context.req.user._id,
+        { $addToSet: { savedRecipes: recipeId } },
+        { new: true }
+      ).populate('savedRecipes');
+    },
+    
+    favRecipe: async (_, { recipeId }, context: { req: AuthRequest }) => {
+      if (!context.req.user) throw new AuthenticationError('Not authenticated');
+
+      const recipe = await Recipe.findById(recipeId);
+      if (!recipe) throw new Error('Recipe not found');
+
+      recipe.favorite = !recipe.favorite;
+      await recipe.save();
+
+      return recipe;
     },
   },
 };
