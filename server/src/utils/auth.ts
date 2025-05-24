@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { GraphQLError } from 'graphql';
 import dotenv from 'dotenv';
 dotenv.config();
-const SECRET = process.env.JWT_SECRET || 'supersecretkey';
+const SECRET = process.env.JWT_SECRET_KEY || 'supersecretkey';
 const expiration = '2h';
 
 export const authenticateToken = ({ req }: any) => {
