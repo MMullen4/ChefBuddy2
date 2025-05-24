@@ -1,5 +1,7 @@
 import { Profile } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
+import FridgeItem from '../models/fridgeModel.js';
+
 interface Profile {
   _id: string;
   name: string;
@@ -33,6 +35,11 @@ const resolvers = {
         return await Profile.findOne({ _id: context.user._id });
       }
       throw AuthenticationError;
+    },
+    getFridge: async (_parent: any, _args: any, context: { user: any }) => {
+      if (!context.user) throw new AuthenticationError('You must be logged in to view your fridge.');
+      return await FridgeItem.find({ userId: context.user._id }).populate('ingredient');
+      },
     },
   },
   Mutation: {
