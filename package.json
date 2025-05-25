@@ -25,6 +25,8 @@
     "wait-on": "^7.2.0"
   },
   "dependencies": {
+    "@eslint/js": "^9.27.0",
+    "concurrently": "^8.2.2",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "apollo-server-express": "^3.13.0",
