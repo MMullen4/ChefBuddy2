@@ -12,6 +12,7 @@ import Home from './pages/Home';
 
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Faq from './pages/Faq';
 
 
 const router = createBrowserRouter([
@@ -29,7 +30,12 @@ const router = createBrowserRouter([
       }, {
         path: '/signup',
         element: <Signup />
+      },
+      {
+        path: '/faq',
+        element: <Faq />
       }
+      
     ]
   },
 ]);

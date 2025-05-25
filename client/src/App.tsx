@@ -66,6 +66,7 @@ function App() {
                 <>
                   <li><Link to="/login">Login</Link></li>
                   <li><Link to="/signup">Signup</Link></li>
+                  <li><Link to="/faq">FAQ</Link></li>
                 </>
               )}
             </ul>
@@ -88,7 +89,7 @@ function App() {
           </>
         )}
       </ul>
-  ;
+  
         <main className="container">
           <Outlet /> 
         </main>
