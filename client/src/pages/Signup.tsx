@@ -41,7 +41,7 @@ const Signup = () => {
 
   return (
     <main className="signup-container">
-    <div className="row">
+    <div className="row signup-row">
       <div className="col-12">
         <div className="card">
           <div className="card-content">

@@ -41,7 +41,7 @@ const Login = () => {
 
   return (
     <main className="login-container">
-    <div className="row">
+    <div className="row login-row">
       <div className="col-12">
         <div className="card login-card">
           <div className="card-content">
