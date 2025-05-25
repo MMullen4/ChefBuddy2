@@ -8,7 +8,7 @@ const Faq = () => {
         <li>
           <div className="collapsible-header">
             <i className="material-icons">question_answer</i>
-            How does the app work? Simple, all you need to do is enter the ingredients you have!
+            <b>How does the app work?</b> 
           </div>
           <div className="p-4">
             <span>
@@ -19,7 +19,7 @@ const Faq = () => {
         <li>
           <div className="collapsible-header">
             <i className="material-icons">restaurant</i>
-            What kind of recipes can I expect?
+            <b>What kind of recipes can I expect?</b>
           </div>
           <div className="p-4">
             <span>
@@ -30,7 +30,7 @@ const Faq = () => {
         <li>
           <div className="collapsible-header">
             <i className="material-icons">security</i>
-            Is my data safe?
+            <b>Is my data safe?</b>
           </div>
           <div className="p-4">
             <span>
