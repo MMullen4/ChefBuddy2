@@ -15,6 +15,18 @@ interface Profile {
   skills: string[];
 }
 
+let openaiClient: OpenAI | null = null;
+
+function getOpenAIClient(): OpenAI {
+  if (!openaiClient) {
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY is missing from environment variables.');
+    }
+    openaiClient = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  }
+  return openaiClient;
+}
+
 const resolvers: IResolvers = {
   Query: {
     me: async (_, __, context: { req: AuthRequest }) => {
@@ -29,6 +41,34 @@ const resolvers: IResolvers = {
     getRecipeById: async (_, { id }) => {
       return await Recipe.findById(id);
     },
+    // AI recipe generator resolver
+    generateRecipes: async (_: any, { ingredients }: { ingredients: string[] }) => {
+      if (!ingredients || ingredients.length === 0) {
+        throw new Error('Please provide a list of ingredients.');
+      }
+
+      const prompt = `
+        Suggest a list of recipes based on the following ingredients: ${ingredients.join(', ')}.
+        Please provide the recipes in JSON format, including the recipe name, ingredients, measurements and instructions.
+      `;
+
+      const openai = getOpenAIClient();
+
+      const response = await openai.chat.completions.create({
+        model: 'gpt-4',
+        messages: [{ role: 'user', content: prompt }],
+      });
+
+      const result = response.choices[0].message?.content;
+
+      await recipeHistory.create({
+        ingredients,
+        response: result,
+      });
+
+      return result || '';
+    },
+
     
   Mutation: {
 
