@@ -41,8 +41,8 @@ const Signup = () => {
 
   return (
     <main className="signup-container">
-    <div className="row">
-      <div className="col s12 m6 offset-m3">
+    <div className="row signup-row">
+      <div className="col-12">
         <div className="card">
           <div className="card-content">
             <span className="card-title deep-orange-text">Sign Up</span>
