@@ -41,9 +41,9 @@ const Login = () => {
 
   return (
     <main className="login-container">
-    <div className="row">
-      <div className="col s12 m9 offset-m2">
-        <div className="card">
+    <div className="row login-row">
+      <div className="col-12">
+        <div className="card login-card">
           <div className="card-content">
             <span className="card-title deep-orange-text">Login</span>
             {data ? (

@@ -29,7 +29,7 @@
 
 /* Solid Gray Background */
 .gradient-background {
-  background-color: #e0e0e0;
+  background-color: #f9f9f7;
   position: relative;
   overflow: hidden;
   min-height: 100vh;
@@ -156,6 +156,7 @@
   background-color: #ff5722;
   box-shadow: 0 2px 5px rgba(255, 87, 34, 0.3);
   transition: all 0.3s ease;
+  width : 100%;
 }
 .btn:hover, .btn-large:hover, .btn-small:hover {
   background-color: #ff7043;
