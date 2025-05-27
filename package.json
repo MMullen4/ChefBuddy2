@@ -25,6 +25,7 @@
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.18",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/materialize-css": "^1.0.14",
     "@types/react-dom": "^19.1.5",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
@@ -37,13 +38,10 @@
     "wait-on": "^7.2.0"
   },
   "dependencies": {
-    "concurrently": "^8.2.2",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-
-    
     "apollo-server-express": "^3.13.0",
-
+    "concurrently": "^8.2.2",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
