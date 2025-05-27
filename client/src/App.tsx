@@ -12,7 +12,7 @@ import Auth from './utils/auth';
 const httpLink = createHttpLink({
   uri: '/graphql',
 });
-var unusedVar = 42;
+
 
 // Construct request middleware that will attach the JWT token to every request as an `authorization` header
 const authLink = setContext((_, { headers }) => {
