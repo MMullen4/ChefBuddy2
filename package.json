@@ -20,6 +20,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/cors": "^2.8.18",
+    "@types/materialize-css": "^1.0.14",
+    "@types/react-dom": "^19.1.5",
     "concurrently": "^8.2.2",
     "wait-on": "^7.2.0"
   },
