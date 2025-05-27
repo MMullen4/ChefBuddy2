@@ -1,11 +1,6 @@
-import { gql, useLazyQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { useState } from 'react';
-
-const GENERATE_RECIPES = gql`
-  query GenerateRecipes($ingredients: [String!]) {
-    generateRecipes(ingredients: $ingredients)
-  }
-`;
+import { GENERATE_RECIPES } from '../utils/queries';
 
 const RecipeGenerator = () => {
   const [ingredient, setIngredient] = useState('');
@@ -27,12 +22,14 @@ const RecipeGenerator = () => {
   const handleSubmit = () => {
   if (ingredients.length === 0) {
     alert('Add at least one ingredient.');
+
     return;
   }
+    console.log('Submitting ingredients:', ingredients)
 
   getRecipes({ variables: { ingredients } });
 };
-  const recipes = data?.generateRecipes ? JSON.parse(data.generateRecipes) : null;
+  const recipes = data?.generateRecipes;
 
   return (
     <div >

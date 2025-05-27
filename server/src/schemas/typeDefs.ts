@@ -9,7 +9,7 @@ const typeDefs = gql`
   }
 
   type Recipe {
-    _id: ID!
+    _id: ID
     title: String!
     ingredients: [String]!
     instructions: [String]!
@@ -34,6 +34,17 @@ const typeDefs = gql`
     password: String!
   }
 
+  type Ingredient {
+  _id: ID!
+  name: String!
+}
+
+type FridgeItem {
+  _id: ID!
+  userId: ID!
+  ingredient: Ingredient
+}
+
   type Query {
     profiles: [User]
     profile(profileId: ID!): User
@@ -41,6 +52,7 @@ const typeDefs = gql`
     getRecipeById(id: ID!): Recipe
     getRecipeByIngredient(ingredient: String!): [Recipe]
     generateRecipes(ingredients: [String!]!): [Recipe!]!
+    getFridge: [FridgeItem]!
   }
 
   type Mutation {
@@ -48,8 +60,11 @@ const typeDefs = gql`
   register(username: String!, email: String!, password: String!): Auth
   saveRecipe(recipeId: ID!): User
   rateRecipe(recipeId: ID!, rating: Int!): Recipe
-  addProfile(input: ProfileInput!): Auth
+  favRecipe(recipeId: ID!): Recipe
   removeProfile: User
+  updateFridgeItem(id: ID!, name: String!): FridgeItem
+  deleteFridgeItem(id: ID!): FridgeItem
+  addFridgeItem(name: String!): FridgeItem
   }
 `;
 
