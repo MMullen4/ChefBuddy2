@@ -14,11 +14,13 @@ import db from './config/connection.js';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { typeDefs, resolvers } from './schemas/index.js';
-import { authenticateToken } from './utils/auth.js';
+import { authenticateToken, authMiddleware } from './utils/auth.js';
 
+console.log(process.env);
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({ req }) => ({ req })
 });
 
 const startApolloServer = async () => {
@@ -36,7 +38,10 @@ const startApolloServer = async () => {
   app.use(
     '/graphql',
     expressMiddleware(server as any, {
-      context: authenticateToken as any,
+      context: async ({ req }) => {
+        const authReq = authenticateToken({ req });
+        return Promise.resolve({ req: authReq, user: authReq.user });
+      },
     })
   );
 

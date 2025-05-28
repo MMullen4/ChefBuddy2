@@ -37,6 +37,7 @@ const RecipeGenerator = () => {
 };
 
   const handleToggleFavorite = async (recipeId: string) => {
+    console.log('Toggling favorite for recipeId:', recipeId);
     try {
       await toggleFavorite({ variables: { recipeId } });
 
@@ -52,7 +53,7 @@ const RecipeGenerator = () => {
   };
 
   const recipes = data?.generateRecipes;
-
+  {console.log(recipes)}
   useEffect(() => {
     if (recipes) {
       const initialFavorites: { [key: string]: boolean } = {};

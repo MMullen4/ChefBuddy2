@@ -77,6 +77,7 @@ const resolvers: IResolvers = {
         )}.
         Please provide the recipes in JSON format, including the recipe name, ingredients, measurements, and instructions.
         Format like this: [{"title": "Pasta", "ingredients": ["Pasta", "Tomato"], "instructions": ["Boil pasta", "Add sauce"], "ratings": [], "comments": []}]
+        Please provide a unique recipeId for each recipe, and ensure the response is valid JSON. 
       `;
 
       const openai = getOpenAIClient();
