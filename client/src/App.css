@@ -1894,16 +1894,16 @@ footer.page-footer.compact-footer {
   margin-bottom: 0 !important;
 }
 
-.footer-copyright {
-  background-color: rgba(0, 0, 0, 0.1) !important;
-  height: 36px !important; /* Reduced from 56px */
-  display: flex;
-  align-items: center;
-}
-
 /* Remove bottom margins from elements in footer */
 .compact-footer p, 
 .compact-footer h6,
 .compact-footer ul {
   margin-bottom: 0;
+}
+
+.compact-footer .copyright {
+  background-color: rgba(0, 0, 0, 0.1);
+  height: 36px;
+  display: flex;
+  align-items: center;
 }

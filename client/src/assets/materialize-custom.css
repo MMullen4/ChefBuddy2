@@ -236,12 +236,6 @@ nav ul a:hover {
   padding: 5px 0;
 }
 
-.page-footer .footer-copyright {
-  height: 36px; /* Reduced from 56px */
-  line-height: 36px;
-  padding: 0 15px;
-}
-
 .page-footer .container {
   padding: 5px 0;
 }

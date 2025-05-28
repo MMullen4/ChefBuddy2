@@ -99,13 +99,8 @@ function App() {
                 <p className="grey-text text-lighten-4 footer-text">Your personal recipe assistant</p>
               </div>
               <div className="col l4 offset-l2 s12">
-                <h6 className="white-text">Links</h6>
+                <h6 className="white-text">© 2025 Chef Buddy</h6>
               </div>
-            </div>
-          </div>
-          <div className="footer-copyright">
-            <div className="container">
-            © 2025 Chef Buddy
             </div>
           </div>
         </footer>
