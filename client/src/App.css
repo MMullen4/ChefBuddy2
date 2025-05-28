@@ -1483,7 +1483,7 @@ label form [type='radio'] {
     -webkit-tap-highlight-color: transparent;
     line-height: 1.5;
     padding: 1rem;
-    background-color: #f05d5d;
+    background-color: #ff0000;
     border-bottom: 1px solid #ddd;
 }
 
