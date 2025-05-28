@@ -46,6 +46,8 @@ const resolvers: IResolvers = {
     myFavoriteRecipes: async (_parent: any, _args: any, context: { user: any }) => {
       if (!context.user) throw new AuthenticationError('You must be logged in to view your favorite recipes.');
       return await RecipeHistory.find({ profile: context.user._id, favorite: true })
+      .sort({ createdAt: -1 })
+      .populate('profile');
     },
     getFridge: async (_parent: any, _args: any, context: { user: any }) => {
       if (!context.user)
@@ -171,19 +173,7 @@ const resolvers: IResolvers = {
       if (!updatedRecipe) throw new Error("Recipe not found");
       return updatedRecipe;
      },
-
-    favRecipe: async (_, { recipeId }, context: { req: AuthRequest }) => {
-      if (!context.req.user) throw new AuthenticationError("Not authenticated");
-
-      const recipe = await Recipe.findById(recipeId);
-      if (!recipe) throw new Error("Recipe not found");
-
-      recipe.favorite = !recipe.favorite;
-      await recipe.save();
-
-      return recipe;
-    },
-
+     
     addFridgeItem: async (_, { name }, context: { user: any }) => {
       if (!context.user)
         throw new AuthenticationError(
