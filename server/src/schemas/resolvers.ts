@@ -1,4 +1,5 @@
 
+
 import { Profile } from "../models/index.js";
 import { signToken, AuthenticationError, UserExistsError } from "../utils/auth.js";
 import FridgeItem from "../models/fridgeModel.js";
@@ -11,6 +12,13 @@ import {
   getUserRecipeHistory,
   getUserRecipePath,
 } from "../utils/profilePath.js";
+import { Profile, RecipeHistory } from '../models/index.js';
+import { signToken, AuthenticationError } from '../utils/auth.js';
+import FridgeItem from '../models/fridgeModel.js';
+import { IResolvers } from '@graphql-tools/utils';
+import { AuthRequest } from '../utils/auth'
+import Recipe from '../models/recipeModel.js';
+import { OpenAI } from 'openai';
 
 interface Profile {
   _id: string;
@@ -48,6 +56,12 @@ const resolvers: IResolvers = {
       if (!context.user) throw new AuthenticationError('You must be logged in to view your recipe history.');
       return await getUserRecipeHistory(context.user._id);  
     },
+    myFavoriteRecipes: async (_parent: any, _args: any, context: { user: any }) => {
+      if (!context.user) throw new AuthenticationError('You must be logged in to view your favorite recipes.');
+      return await RecipeHistory.find({ profile: context.user._id, favorite: true })
+      .sort({ createdAt: -1 })
+      .populate('profile');
+    },
     getFridge: async (_parent: any, _args: any, context: { user: any }) => {
       if (!context.user)
         throw new AuthenticationError(
@@ -78,6 +92,7 @@ const resolvers: IResolvers = {
         )}.
         Please provide the recipes in JSON format, including the recipe name, ingredients, measurements, and instructions.
         Format like this: [{"title": "Pasta", "ingredients": ["Pasta", "Tomato"], "instructions": ["Boil pasta", "Add sauce"], "ratings": [], "comments": []}]
+        Please provide a unique recipeId for each recipe, and ensure the response is valid JSON. 
       `;
 
       const openai = getOpenAIClient();
@@ -178,19 +193,7 @@ const resolvers: IResolvers = {
       if (!updatedRecipe) throw new Error("Recipe not found");
       return updatedRecipe;
      },
-
-    favRecipe: async (_, { recipeId }, context: { req: AuthRequest }) => {
-      if (!context.req.user) throw new AuthenticationError("Not authenticated");
-
-      const recipe = await Recipe.findById(recipeId);
-      if (!recipe) throw new Error("Recipe not found");
-
-      recipe.favorite = !recipe.favorite;
-      await recipe.save();
-
-      return recipe;
-    },
-
+     
     addFridgeItem: async (_, { name }, context: { user: any }) => {
       if (!context.user)
         throw new AuthenticationError(
@@ -228,6 +231,14 @@ const resolvers: IResolvers = {
       });
       if (!deletedItem) throw new Error("Fridge item not found");
       return deletedItem;
+    },
+
+    toggleFavorite: async (_: any, { recipeId }: { recipeId: string }) => {
+      const recipe = await RecipeHistory.findById(recipeId);
+      if (!recipe) throw new Error('Recipe not found');
+      recipe.favorite = !recipe.favorite;
+      await recipe.save();
+      return recipe;
     },
   },
 };

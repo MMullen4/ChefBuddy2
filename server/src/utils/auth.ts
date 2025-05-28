@@ -22,6 +22,7 @@ export const authenticateToken = ({ req }: any) => {
   if (!token) {
     return req;
   }
+
   try {
     const { data } = jwt.verify(token, getSecret(), { maxAge: expiration }) as JwtPayload & { data: UserPayload };
     req.user = data;
@@ -57,25 +58,6 @@ export interface AuthRequest extends Request {
 export function signToken(user: UserPayload): string {
   return jwt.sign({ data: user }, getSecret(), { expiresIn: expiration });
 }
-
-// export function authMiddleware({ req }: { req: AuthRequest }): AuthRequest {
-//   let token = req.headers.authorization;
-//   if (token && token.startsWith ('Bearer ')) {
-//     token = token.split(' ').pop()?.trim();
-//   }
-  
-// if (!token) {
-//   return req;
-// }
-  
-// try {
-//   const { data } = jwt.verify(token, getSecret()) as JwtPayload & { data: UserPayload };
-//   req.user = data;
-// } catch (err) {
-//   console.log('Invalid token');
-// }
-//   return req;
-// }
 
 // create a custom error class for authentication errors
 // calls the GraphQLError constructor with the message 

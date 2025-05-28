@@ -15,6 +15,7 @@ interface IRecipe extends Document {
       quantity: string;
     }>;
     favorite: boolean;
+    ratings?: number;
     comments: IComment[];
     ratings: number;
 }
