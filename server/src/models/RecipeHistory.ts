@@ -1,7 +1,8 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+
 export interface IRecipeHistory extends Document {
-    userId: string;
+    profile: mongoose.Types.ObjectId;
     ingredients: string[];
     response: string;
     favorite: boolean;
@@ -9,7 +10,7 @@ export interface IRecipeHistory extends Document {
 }
 
 const RecipeHistorySchema = new Schema<IRecipeHistory>({
-    userId: { type: String, required: true },
+    profile: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     ingredients: [{ type: String, required: true }],
     response: { type: String, required: true },
     favorite: { type: Boolean, default: false },

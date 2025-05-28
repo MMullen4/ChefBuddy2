@@ -1,11 +1,11 @@
-import { Profile } from "../models/index.js";
-import { signToken, AuthenticationError } from "../utils/auth.js";
-import FridgeItem from "../models/fridgeModel.js";
-import { IResolvers } from "@graphql-tools/utils";
-import { AuthRequest } from "../utils/auth";
-import Recipe from "../models/recipeModel.js";
-import { OpenAI } from "openai";
-import recipeHistory from "../models/RecipeHistory.js";
+import { Profile } from '../models/index.js';
+import { signToken, AuthenticationError } from '../utils/auth.js';
+import FridgeItem from '../models/fridgeModel.js';
+import { IResolvers } from '@graphql-tools/utils';
+import { AuthRequest } from '../utils/auth'
+import Recipe from '../models/recipeModel.js';
+import { OpenAI } from 'openai';
+import { getUserRecipeHistory, getUserRecipePath } from '../utils/profilePath.js';
 
 interface Profile {
   _id: string;
@@ -34,6 +34,14 @@ const resolvers: IResolvers = {
       return await Profile.findById(context.req.user._id).populate(
         "savedRecipes"
       );
+    },
+    myRecipePath: async (_parent: any, _args: any, context: any ) => {
+      if (!context.user) throw new AuthenticationError('You must be logged in.');
+      return await getUserRecipePath  (context.user._id);
+    },
+    myRecipeHistory: async (_parent: any, _args: any, context: { user: any }) => {
+      if (!context.user) throw new AuthenticationError('You must be logged in to view your recipe history.');
+      return await getUserRecipeHistory(context.user._id);  
     },
     getFridge: async (_parent: any, _args: any, context: { user: any }) => {
       if (!context.user)
@@ -90,11 +98,11 @@ const resolvers: IResolvers = {
         throw new Error("OpenAI response was not valid JSON.");
       }
 
-      // Optionally save to DB
-      await recipeHistory.create({
-        ingredients,
-        response: result,
-      });
+      // // Optionally save to DB
+      // await recipeHistory.create({
+      //   ingredients,
+      //   response: result,
+      // });
 
       return parsed;
     },
