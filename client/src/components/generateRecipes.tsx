@@ -1,11 +1,17 @@
-import { useLazyQuery } from '@apollo/client';
-import { useState } from 'react';
+import { useLazyQuery, useMutation } from '@apollo/client';
+import { useState, useEffect } from 'react';
 import { GENERATE_RECIPES } from '../utils/queries';
+import { TOGGLE_FAVORITE } from '../utils/mutations';
+
 
 const RecipeGenerator = () => {
   const [ingredient, setIngredient] = useState('');
   const [ingredients, setIngredients] = useState<string[]>([]);
+  const [favoritesMap, setFavoritesMap] = useState<{ [key: string]: boolean }>({});
   const [getRecipes, { loading, data, error }] = useLazyQuery(GENERATE_RECIPES);
+  const [toggleFavorite] = useMutation(TOGGLE_FAVORITE);
+
+
 
   const addIngredient = () => {
     const trimmed = ingredient.trim();
@@ -27,9 +33,38 @@ const RecipeGenerator = () => {
   }
     console.log('Submitting ingredients:', ingredients)
 
-  getRecipes({ variables: { ingredients } });
+  getRecipes({ variables: { ingredients },  });
 };
+
+  const handleToggleFavorite = async (recipeId: string) => {
+    console.log('Toggling favorite for recipeId:', recipeId);
+    try {
+      await toggleFavorite({ variables: { recipeId } });
+
+      const newFavorite = data?.toggleFavorite?.favorite;
+
+      setFavoritesMap((prev) => ({
+        ...prev,
+        [recipeId]: newFavorite ?? !prev[recipeId],
+      }));
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
+  };
+
   const recipes = data?.generateRecipes;
+  {console.log(recipes)}
+  useEffect(() => {
+    if (recipes) {
+      const initialFavorites: { [key: string]: boolean } = {};
+      recipes.forEach((recipe: { _id: string; favorite?: boolean }) => {
+        initialFavorites[recipe._id] = recipe.favorite ?? false;
+      });
+      setFavoritesMap(initialFavorites);
+    }
+  }, [recipes]);
+
+
 
   return (
     <div >
@@ -83,6 +118,11 @@ const RecipeGenerator = () => {
               <h2>{recipe.title}</h2>
               <p><strong>Ingredients:</strong> {recipe.ingredients.join(', ')}</p>
               <p><strong>Instructions:</strong> {recipe.instructions}</p>
+              <button onClick={() => handleToggleFavorite(recipe._id)}
+              style={{ fontSize: '1.5rem', cursor: 'pointer', background: 'none', border: 'none' }}
+              >
+                {favoritesMap[recipe._id] ? '❤️' : '🤍'}
+              </button>
             </div>
           )) : <pre>{JSON.stringify(recipes, null, 2)}</pre>}
         </div>
@@ -92,3 +132,4 @@ const RecipeGenerator = () => {
 };
 
 export default RecipeGenerator;
+

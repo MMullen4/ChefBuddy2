@@ -8,19 +8,22 @@ const expiration = '2h';
 
 // Middleware to authenticate token
 // verifies existing token and decodes user data
-export const authenticateToken = ({ req }: any) => {
+export const authenticateToken = ({ req }: { req: AuthRequest }): AuthRequest => {
   let token = req.body.token || req.query.token || req.headers.authorization;
-  if (req.headers.authorization) {
-    token = token.split(' ').pop().trim();
-  }
-  if (!token) {
+    // console.log('Generated token:', token);
+    if (token && token.startsWith('Bearer ')) {
+      token = token.split(' ')[1].trim(); // or use .split(' ').pop().trim()
+    } else {
+      
     return req;
   }
+
   try {
-    const { data }: any = jwt.verify(token, process.env.JWT_SECRET_KEY || '', { maxAge: '2h' });
+    const { data }: any = jwt.verify(token, SECRET, { maxAge: '2h' });
     req.user = data;
   } catch (err) {
     console.log("Invalid token:", err instanceof Error ? err.message : err);
+    console.log("JWT SECRET (signing/verifying):", SECRET);
   }
   return req; // return the request object with user data
 };
@@ -38,23 +41,25 @@ export interface AuthRequest extends Request {
 // the token will be signed with the secret key and will expire in 2 hours
 export function signToken(user: UserPayload): string {
   return jwt.sign({ data: user }, SECRET, { expiresIn: expiration });
+
 }
 
 export function authMiddleware({ req }: { req: AuthRequest }): AuthRequest {
   let token = req.headers.authorization;
   if (token && token.startsWith ('Bearer ')) {
-    token = token.split(' ').pop()?.trim();
-  }
-  
-if (!token) {
-  return req;
+    token = token.split(' ')[1].trim();
+  } else {
+    console.log('No Bearer token found');
+    return req;
 }
+
+console.log('PARSED TOKEN:', token);
   
 try {
-  const { data } = jwt.verify(token, SECRET) as JwtPayload & { data: UserPayload };
-  req.user = data;
+  const { decoded } = jwt.verify(token, SECRET) as JwtPayload & { data: UserPayload };
+  req.user = decoded.data;
 } catch (err) {
-  console.log('Invalid token');
+  console.log('Invalid token: decoded data is undefined or token is invalid');
 }
   return req;
 }

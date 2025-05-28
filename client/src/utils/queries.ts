@@ -37,6 +37,20 @@ export const GENERATE_RECIPES = gql`
       title
       ingredients
       instructions
+      favorite
+    }
+  }
+`;
+
+export const GET_FAVORITE_RECIPES = gql`
+  query GetFavoriteRecipes {
+    myRecipeHistory {
+    _id
+    ingredients
+    response
+    favorite
+    createdAt
+    mealType
     }
   }
 `;
