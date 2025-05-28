@@ -16,6 +16,7 @@ const typeDefs = gql`
     instructions: [String]!
     ratings: [Int]
     comments: [String]
+    favorite: Boolean
   }
 
   type Comment {
@@ -48,7 +49,7 @@ type FridgeItem {
 
 type RecipeHistory {
   _id: ID!
-  profile: User
+  profile: Profile
   ingredients: [String]
   response: String
   favorite: Boolean
@@ -56,11 +57,12 @@ type RecipeHistory {
 }
 
   type Query {
-    profiles: [User]
-    profile(profileId: ID!): User
-    me: User
+    profiles: [Profile]
+    profile(profileId: ID!): Profile
+    me: Profile
     myRecipePath: String
     myRecipeHistory: [RecipeHistory]
+    myFavoriteRecipes: [RecipeHistory]
     getRecipeById(id: ID!): Recipe
     getRecipeByIngredient(ingredient: String!): [Recipe]
     generateRecipes(ingredients: [String!]!): [Recipe!]!
@@ -77,6 +79,7 @@ type RecipeHistory {
   updateFridgeItem(id: ID!, name: String!): FridgeItem
   deleteFridgeItem(id: ID!): FridgeItem
   addFridgeItem(name: String!): FridgeItem
+  toggleFavorite(recipeId: ID!): RecipeHistory
   }
 `;
 

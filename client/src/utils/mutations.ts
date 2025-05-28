@@ -26,3 +26,11 @@ export const LOGIN_USER = gql`
   }
 `;
 
+export const TOGGLE_FAVORITE = gql`
+  mutation ToggleFavorite($recipeId: ID!) {
+    toggleFavorite(recipeId: $recipeId) {
+      _id
+      favorite
+    }
+  }
+`;

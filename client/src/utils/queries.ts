@@ -49,6 +49,7 @@ export const GET_FAVORITE_RECIPES = gql`
     response
     favorite
     createdAt
+    mealType
     }
   }
 `;

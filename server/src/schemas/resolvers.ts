@@ -1,4 +1,4 @@
-import { Profile } from '../models/index.js';
+import { Profile, RecipeHistory } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 import FridgeItem from '../models/fridgeModel.js';
 import { IResolvers } from '@graphql-tools/utils';
@@ -42,6 +42,10 @@ const resolvers: IResolvers = {
     myRecipeHistory: async (_parent: any, _args: any, context: { user: any }) => {
       if (!context.user) throw new AuthenticationError('You must be logged in to view your recipe history.');
       return await getUserRecipeHistory(context.user._id);  
+    },
+    myFavoriteRecipes: async (_parent: any, _args: any, context: { user: any }) => {
+      if (!context.user) throw new AuthenticationError('You must be logged in to view your favorite recipes.');
+      return await RecipeHistory.find({ profile: context.user._id, favorite: true })
     },
     getFridge: async (_parent: any, _args: any, context: { user: any }) => {
       if (!context.user)
@@ -192,6 +196,14 @@ const resolvers: IResolvers = {
       });
       if (!deletedItem) throw new Error("Fridge item not found");
       return deletedItem;
+    },
+
+    toggleFavorite: async (_: any, { recipeId }: { recipeId: string }) => {
+      const recipe = await RecipeHistory.findById(recipeId);
+      if (!recipe) throw new Error('Recipe not found');
+      recipe.favorite = !recipe.favorite;
+      await recipe.save();
+      return recipe;
     },
   },
 };

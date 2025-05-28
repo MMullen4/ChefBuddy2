@@ -6,6 +6,7 @@ export interface IRecipeHistory extends Document {
     ingredients: string[];
     response: string;
     favorite: boolean;
+    mealType: string;
     createdAt: Date;
 }
 
@@ -14,6 +15,7 @@ const RecipeHistorySchema = new Schema<IRecipeHistory>({
     ingredients: [{ type: String, required: true }],
     response: { type: String, required: true },
     favorite: { type: Boolean, default: false },
+    mealType: { type: String, enum: ['breakfast', 'lunch', 'dinner', 'dessert'], default: 'lunch' },
     createdAt: { type: Date, default: Date.now },
 });
 
