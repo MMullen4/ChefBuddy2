@@ -16,6 +16,7 @@ interface IRecipe extends Document {
     }>;
     favorite: boolean;
     comments: IComment[];
+    ratings: number;
 }
 
 const commentSchema = new Schema<IComment>({
@@ -55,11 +56,7 @@ const recipeSchema = new Schema<IRecipe>({
     ratings: {
         type: Number,
     },
-    comments: [{
-        user: String,
-        text: String,
-        createdAt: String
-    }],
+    comments: [commentSchema],
 });
 
 const Recipe = model<IRecipe>("Recipe", recipeSchema);
