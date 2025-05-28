@@ -15,7 +15,8 @@ const typeDefs = gql`
     ingredients: [String]!
     instructions: [String]!
     ratings: [Int]
-    comments: [String]
+    comments: [Comment]
+    favorite: Boolean
   }
 
   type Comment {
@@ -73,6 +74,7 @@ type RecipeHistory {
   saveRecipe(recipeId: ID!): Profile
   rateRecipe(recipeId: ID!, rating: Int!): Recipe
   favRecipe(recipeId: ID!): Recipe
+  addComment(recipeId: ID!, text: String!): Recipe
   removeProfile: Profile
   updateFridgeItem(id: ID!, name: String!): FridgeItem
   deleteFridgeItem(id: ID!): FridgeItem
