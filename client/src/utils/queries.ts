@@ -40,3 +40,15 @@ export const GENERATE_RECIPES = gql`
     }
   }
 `;
+
+export const GET_FAVORITE_RECIPES = gql`
+  query GetFavoriteRecipes {
+    myRecipeHistory {
+    _id
+    ingredients
+    response
+    favorite
+    createdAt
+    }
+  }
+`;
