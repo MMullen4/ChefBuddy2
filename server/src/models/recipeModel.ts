@@ -52,7 +52,14 @@ const recipeSchema = new Schema<IRecipe>({
         type: Boolean,
         default: false,
     },
-    comments: [commentSchema],
+    ratings: {
+        type: Number,
+    },
+    comments: [{
+        user: String,
+        text: String,
+        createdAt: String
+    }],
 });
 
 const Recipe = model<IRecipe>("Recipe", recipeSchema);
