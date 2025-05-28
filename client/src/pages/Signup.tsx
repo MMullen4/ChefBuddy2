@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import { ADD_PROFILE } from '../utils/mutations';
+import { REGISTER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
+// Signup component for user registration
 const Signup = () => {
   const [formState, setFormState] = useState({
-    name: '',
+    username: '',
     email: '',
     password: '',
   });
-  const [addProfile, { error, data }] = useMutation(ADD_PROFILE);
+  const [register, { error, data }] = useMutation(REGISTER);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -21,11 +22,12 @@ const Signup = () => {
     });
   };
 
+  // Function to handle form submission
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     
     try {
-      const { data } = await addProfile({
+      const { data } = await register({
         variables: { 
           input: { 
             ...formState 
@@ -33,12 +35,13 @@ const Signup = () => {
         },
       });
 
-      Auth.login(data.addProfile.token);
+      Auth.login(data.register.token);
     } catch (e) {
       console.error(e);
     }
   };
 
+  // Render the signup form
   return (
     <main className="signup-container">
     <div className="row signup-row">
@@ -57,13 +60,13 @@ const Signup = () => {
                   <input
                     className="validate"
                     placeholder="Your username"
-                    name="name"
+                    name="username"
                     type="text"
-                    value={formState.name}
+                    value={formState.username}
                     onChange={handleChange}
                     required
                   />
-                  <label htmlFor="name" className="active">Username</label>
+                  <label htmlFor="username" className="active">Username</label>
                 </div>
                 <div className="input-field">
                   <input
