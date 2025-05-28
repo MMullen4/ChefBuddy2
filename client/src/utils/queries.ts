@@ -37,6 +37,7 @@ export const GENERATE_RECIPES = gql`
       title
       ingredients
       instructions
+      favorite
     }
   }
 `;

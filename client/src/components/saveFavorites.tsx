@@ -45,8 +45,8 @@ const SaveFavorites: React.FC = () => {
                   <button
                     className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
                     onClick={() => toggleFavorite({ variables: { recipeId: recipe._id } })}
-                  >
-                    Unfavorite
+                    >
+                      {recipe.favorite ? '❤️' : '🤍'}
                   </button>
                 </li>
               ))}
