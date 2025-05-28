@@ -1,10 +1,11 @@
 import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
-  type User {
+  type Profile {
     _id: ID!
     username: String!
     email: String!
+    password: String!
     savedRecipes: [Recipe]
   }
 
@@ -25,11 +26,11 @@ const typeDefs = gql`
 
   type Auth {
     token: ID!
-    user: User
+    profile: Profile!
   }
 
   input ProfileInput {
-    name: String!
+    username: String!
     email: String!
     password: String!
   }
@@ -68,11 +69,11 @@ type RecipeHistory {
 
   type Mutation {
   login(email: String!, password: String!): Auth
-  register(username: String!, email: String!, password: String!): Auth
-  saveRecipe(recipeId: ID!): User
+  register(input: ProfileInput!): Auth
+  saveRecipe(recipeId: ID!): Profile
   rateRecipe(recipeId: ID!, rating: Int!): Recipe
   favRecipe(recipeId: ID!): Recipe
-  removeProfile: User
+  removeProfile: Profile
   updateFridgeItem(id: ID!, name: String!): FridgeItem
   deleteFridgeItem(id: ID!): FridgeItem
   addFridgeItem(name: String!): FridgeItem

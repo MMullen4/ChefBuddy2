@@ -1445,7 +1445,7 @@ label form [type='radio'] {
   max-width: 100%;
 }
 .home-container {
-    background-image: url("./assets/images/ChefBuddy.png") ;
+    background-image: url("./assets/images/ChefBuddy1.png") ;
     background-size: cover;
     background-position: center;
     min-height: 100vh;
@@ -1879,4 +1879,31 @@ label form [type='radio'] {
 }
 .login-card {
   width: 100%;
+}
+
+/* Compact footer styles */
+footer.page-footer.compact-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+  position: relative;
+  z-index: 2;
+  padding: 0;
+}
+
+.footer-row {
+  margin-bottom: 0 !important;
+}
+
+.footer-copyright {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+  height: 36px !important; /* Reduced from 56px */
+  display: flex;
+  align-items: center;
+}
+
+/* Remove bottom margins from elements in footer */
+.compact-footer p, 
+.compact-footer h6,
+.compact-footer ul {
+  margin-bottom: 0;
 }
