@@ -45,10 +45,21 @@ type FridgeItem {
   ingredient: Ingredient
 }
 
+type RecipeHistory {
+  _id: ID!
+  profile: User
+  ingredients: [String]
+  response: String
+  favorite: Boolean
+  createdAt: String!
+}
+
   type Query {
     profiles: [User]
     profile(profileId: ID!): User
     me: User
+    myRecipePath: String
+    myRecipeHistory: [RecipeHistory]
     getRecipeById(id: ID!): Recipe
     getRecipeByIngredient(ingredient: String!): [Recipe]
     generateRecipes(ingredients: [String!]!): [Recipe!]!
