@@ -14,13 +14,12 @@ import db from './config/connection.js';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { typeDefs, resolvers } from './schemas/index.js';
-import { authenticateToken, authMiddleware } from './utils/auth.js';
+import { authenticateToken } from './utils/auth.js';
 
 console.log(process.env);
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
-  context: ({ req }) => ({ req })
+  resolvers
 });
 
 const startApolloServer = async () => {
