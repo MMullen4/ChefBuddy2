@@ -56,8 +56,8 @@ const RecipeGenerator = () => {
   useEffect(() => {
     if (recipes) {
       const initialFavorites: { [key: string]: boolean } = {};
-      recipes.forEach((r) => {
-        initialFavorites[r._id] = r.favorite ?? false;
+      recipes.forEach((recipe: { _id: string; favorite?: boolean }) => {
+        initialFavorites[recipe._id] = recipe.favorite ?? false;
       });
       setFavoritesMap(initialFavorites);
     }
