@@ -1,18 +1,11 @@
-/*==============================================================================
-  MATERIALIZE CUSTOM CSS
-  Custom Materialize theme with yellow accent-2 #ffff00 and deep-orange #ff5722
-==============================================================================*/
 
-/*==============================================================================
-  1. COLOR DEFINITIONS
-==============================================================================*/
 
 /* Primary color: deep-orange #ff5722 */
 .deep-orange {
   background-color: #ff5722 !important;
 }
 .deep-orange-text {
-  color: #ff5722 !important;
+  color: #000000 !important;
 }
 
 /* Accent color: yellow accent-2 #ffff00 */
