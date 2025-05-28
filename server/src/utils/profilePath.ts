@@ -6,7 +6,7 @@ export const getUserRecipePath = async (profileId: Types.ObjectId): Promise<stri
   const profile = await Profile.findById(profileId);
   if (!profile) throw new Error('Profile not found');
 
-  const safeName = profile.name.replace(/\s+/g, '_').toLowerCase(); // e.g., "John Doe" -> "john_doe"
+  const safeName = profile.username.replace(/\s+/g, '_').toLowerCase(); // e.g., "John Doe" -> "john_doe"
   return `/users/${safeName}/recipes`;
 };
 
