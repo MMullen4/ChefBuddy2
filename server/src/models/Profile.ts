@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 // Define an interface for the Profile document
 interface IProfile extends Document {
   _id: string;
-  name: string;
+  username: string;
   email: string;
   password:string;
   skills: string[];
@@ -14,7 +14,7 @@ interface IProfile extends Document {
 // Define the schema for the Profile document
 const profileSchema = new Schema<IProfile>(
   {
-    name: {
+    username: {
       type: String,
       required: true,
       unique: true,

@@ -25,6 +25,10 @@
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.18",
 
+    "@types/materialize-css": "^1.0.14",
+    "@types/react-dom": "^19.1.5",
+
+
     "@types/jsonwebtoken": "^9.0.9",
     "@types/materialize-css": "^1.0.14",
     "@types/react-dom": "^19.1.5",
@@ -39,6 +43,7 @@
     "wait-on": "^7.2.0"
   },
   "dependencies": {
+
     "concurrently": "^8.2.2",
 
     "@types/materialize-css": "^1.0.14",

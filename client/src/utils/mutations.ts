@@ -1,12 +1,13 @@
 import { gql } from '@apollo/client';
 
-export const ADD_PROFILE = gql`
-  mutation addProfile($input: ProfileInput!) {
-    addProfile(input: $input) {
+export const REGISTER = gql`
+  mutation register($input: ProfileInput!) {
+    register(input: $input) {
       token
       profile {
         _id
-        name
+        username
+        email
       }
     }
   }
@@ -19,7 +20,7 @@ export const LOGIN_USER = gql`
       token
       profile {
         _id
-        name
+        username
       }
     }
   }

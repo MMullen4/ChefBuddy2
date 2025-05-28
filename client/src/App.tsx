@@ -35,11 +35,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-
-
-
 function App() {
-  
   useEffect(() => {
     const elems = document.querySelectorAll('.sidenav');
     M.Sidenav.init(elems);
@@ -87,6 +83,7 @@ function App() {
           <>
             <li><Link to="/login">Login</Link></li>
             <li><Link to="/signup">Signup</Link></li>
+            <li><Link to="/faq">FAQ</Link></li>
           </>
         )}
       </ul>
