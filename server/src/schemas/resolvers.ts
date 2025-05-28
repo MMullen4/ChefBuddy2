@@ -147,6 +147,30 @@ const resolvers: IResolvers = {
       ).populate("savedRecipes");
     },
 
+    addComment: async (
+      _,
+      { recipeId, text },
+      context: { req: AuthRequest }
+    ) => {
+      if (!context.req.user) throw new AuthenticationError("Not authenticated");
+
+      const updatedRecipe = await Recipe.findByIdAndUpdate(
+        recipeId,
+        {
+          $push: {
+            comments: {
+              user: context.req.user.username,
+              text: text,
+              createdAt: new Date().toISOString(),
+            }
+          }
+        },
+        { new: true }
+      );
+      if (!updatedRecipe) throw new Error("Recipe not found");
+      return updatedRecipe;
+     },
+
     favRecipe: async (_, { recipeId }, context: { req: AuthRequest }) => {
       if (!context.req.user) throw new AuthenticationError("Not authenticated");
 

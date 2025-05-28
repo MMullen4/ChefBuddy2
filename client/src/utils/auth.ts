@@ -7,7 +7,7 @@ interface ExtendedJwt extends JwtPayload {
     email:string,
     _id:string
   }
-};
+}
 
 // defines an authentication service that handles user authentication, including checking if a user is logged in, retrieving user profile information, and managing JWT tokens.
 class AuthService {
