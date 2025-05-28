@@ -91,28 +91,16 @@ function App() {
         <main className="container">
           <Outlet /> 
         </main>
-        <footer className="page-footer footer-gradient">
+        <footer className="page-footer footer-gradient compact-footer">
           <div className="container">
-            <div className="row">
+            <div className="row footer-row">
               <div className="col l6 s12">
-                <h5 className="white-text">Chef Buddy</h5>
-                <p className="grey-text text-lighten-4">Your personal recipe assistant</p>
+                <h6 className="white-text">Chef Buddy</h6>
+                <p className="grey-text text-lighten-4 footer-text">Your personal recipe assistant</p>
               </div>
               <div className="col l4 offset-l2 s12">
-                <h5 className="white-text">Links</h5>
-                <ul>
-                  <li><Link to="/" className="grey-text text-lighten-3">Home</Link></li>
-                  {Auth.loggedIn() && (
-                    <li><Link to="/me" className="grey-text text-lighten-3">Profile</Link></li>
-                  )}
-                </ul>
+                <h6 className="white-text">© 2025 Chef Buddy</h6>
               </div>
-            </div>
-          </div>
-          <div className="footer-copyright">
-            <div className="container">
-            © 2025 Chef Buddy
-            <a className="grey-text text-lighten-4 right" href="#!">More Links</a>
             </div>
           </div>
         </footer>

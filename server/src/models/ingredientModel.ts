@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 
 interface Ingredient {
-    userId: mongoose.Schema.Types.ObjectId;
+    profile: mongoose.Types.ObjectId;
     name: string;
     category: string;
 }
 
 const ingredientSchema = new mongoose.Schema<Ingredient>({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    profile: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     name: { type: String, required: true },
     category: { type: String },
 });
