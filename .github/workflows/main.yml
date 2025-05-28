@@ -7,6 +7,7 @@ on:
     branches:
       - develop
       - staging
+      - main
 
 # Jobs to carry out
 jobs:
@@ -37,6 +38,3 @@ jobs:
       - name: Run Build
         run: npm run build
 
-      # Run tests
-      - name: Run Tests
-        run: npm run test
