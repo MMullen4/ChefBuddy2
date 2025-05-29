@@ -1,4 +1,4 @@
-
+// Description: A simple FAQ page for a recipe suggestion app using React and Materialize CSS.
 const Faq = () => {
   return (
       <div className="container" style={{ padding: '2rem', backgroundColor: '#f9f9f9'  }}>

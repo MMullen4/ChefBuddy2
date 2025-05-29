@@ -20,7 +20,7 @@ const typeDefs = gql`
   }
 
   type Comment {
-    user: String
+    username: String
     text: String
     createdAt: String
   }

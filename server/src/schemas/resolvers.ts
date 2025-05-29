@@ -1,5 +1,4 @@
 
-
 import { Profile } from "../models/index.js";
 import { signToken, AuthenticationError, UserExistsError } from "../utils/auth.js";
 import FridgeItem from "../models/fridgeModel.js";

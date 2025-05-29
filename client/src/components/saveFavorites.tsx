@@ -3,8 +3,17 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_FAVORITE_RECIPES } from '../utils/queries';
 import { TOGGLE_FAVORITE } from '../utils/mutations';
 
+// type definition for Recipe to ensure type safety
+interface Recipe {
+  _id: string;
+  mealType: string;
+  ingredients: string[];
+  response: string;
+  favorite: boolean;
+  createdAt: string;
+}
+// function to fetch favorite recipes and toggle their favorite status
 const SaveFavorites: React.FC = () => {
-
     const [filter, setFilter] = React.useState<string>('All');
     const { loading, error, data, refetch } = useQuery(GET_FAVORITE_RECIPES);
     const [toggleFavorite] = useMutation(TOGGLE_FAVORITE, {
@@ -15,9 +24,10 @@ const SaveFavorites: React.FC = () => {
     if (error) return <p>Error: {error.message}</p>;
 
     const favoriteRecipes = data?.myRecipeHistory || []
-        .filter((recipe: any) => recipe.favorite)
-        .filter((recipe: any) => (filter === 'All' ? true : recipe.mealType === filter.toLowerCase()));
+        .filter((recipe: Recipe) => recipe.favorite)
+        .filter((recipe: Recipe) => (filter === 'All' ? true : recipe.mealType === filter.toLowerCase()));
 
+  // return the list of favorite recipes with filtering options
     return (
         <div className="p-4">
           <h2 className="text-2xl font-bold mb-4">Favorite Recipes</h2>
@@ -36,7 +46,7 @@ const SaveFavorites: React.FC = () => {
             <p>No favorites yet!</p>
           ) : (
             <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {favoriteRecipes.map((recipe: any) => (
+              {favoriteRecipes.map((recipe: Recipe) => (
                 <li key={recipe._id} className="border p-4 rounded shadow bg-white">
                   <h3 className="text-xl font-semibold mb-2">Meal: {recipe.mealType}</h3>
                   <p><strong>Ingredients:</strong> {recipe.ingredients.join(', ')}</p>
