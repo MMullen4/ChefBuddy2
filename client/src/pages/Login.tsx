@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
+// Login component for user authentication
 const Login = () => {
   const [formState, setFormState] = useState({ email: '', password: '' });
   const [login, { error, data }] = useMutation(LOGIN_USER);
@@ -39,6 +40,7 @@ const Login = () => {
     });
   };
 
+  // if user is logged in, redirect to home page
   return (
     <main className="login-container">
     <div className="row login-row">
