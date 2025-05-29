@@ -7,18 +7,11 @@ import { IResolvers } from "@graphql-tools/utils";
 import { AuthRequest } from "../utils/auth";
 import Recipe from "../models/recipeModel.js";
 import { OpenAI } from "openai";
-// import recipeHistory from "../models/RecipeHistory.js";
+import RecipeHistory from "../models/RecipeHistory.js";
 import {
   getUserRecipeHistory,
   getUserRecipePath,
 } from "../utils/profilePath.js";
-import { Profile, RecipeHistory } from '../models/index.js';
-import { signToken, AuthenticationError } from '../utils/auth.js';
-import FridgeItem from '../models/fridgeModel.js';
-import { IResolvers } from '@graphql-tools/utils';
-import { AuthRequest } from '../utils/auth'
-import Recipe from '../models/recipeModel.js';
-import { OpenAI } from 'openai';
 
 interface Profile {
   _id: string;
