@@ -1,3 +1,17 @@
+
+
+import { Profile } from "../models/index.js";
+import { signToken, AuthenticationError, UserExistsError } from "../utils/auth.js";
+import FridgeItem from "../models/fridgeModel.js";
+import { IResolvers } from "@graphql-tools/utils";
+import { AuthRequest } from "../utils/auth";
+import Recipe from "../models/recipeModel.js";
+import { OpenAI } from "openai";
+// import recipeHistory from "../models/RecipeHistory.js";
+import {
+  getUserRecipeHistory,
+  getUserRecipePath,
+} from "../utils/profilePath.js";
 import { Profile, RecipeHistory } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 import FridgeItem from '../models/fridgeModel.js';
@@ -5,7 +19,6 @@ import { IResolvers } from '@graphql-tools/utils';
 import { AuthRequest } from '../utils/auth'
 import Recipe from '../models/recipeModel.js';
 import { OpenAI } from 'openai';
-import { getUserRecipeHistory, getUserRecipePath } from '../utils/profilePath.js';
 
 interface Profile {
   _id: string;
@@ -131,6 +144,13 @@ const resolvers: IResolvers = {
 
     register: async (_, { input }) => {
       const { username, email, password } = input;
+
+      // check if a profile with the same email already exists
+      const existingProfile = await Profile.findOne({ email });
+      if (existingProfile) {
+        throw new UserExistsError("A profile with this email already exists.");
+      }
+      // if not, create a new profile
       const profile = await Profile.create({ username, email, password });
       const token = signToken({
         _id: profile._id,

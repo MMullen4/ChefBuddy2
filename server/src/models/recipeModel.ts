@@ -17,6 +17,7 @@ interface IRecipe extends Document {
     favorite: boolean;
     ratings?: number;
     comments: IComment[];
+    ratings: number;
 }
 
 const commentSchema = new Schema<IComment>({
