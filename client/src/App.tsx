@@ -43,9 +43,9 @@ function App() {
           <div className="nav-wrapper nav-gradient">
             <div className="container">
               <Link to="/" className="brand-logo">Chef Buddy</Link>
-
               {/* Always-visible burger icon */}
               <a href="#!" data-target="mobile-demo" className="sidenav-trigger right">
+                
                 <i className="material-icons">menu</i>
               </a>
 
@@ -66,6 +66,7 @@ function App() {
           {Auth.loggedIn() ? (
             <>
               <li><Link to="/me">Profile</Link></li>
+              <li><Link to="/favorites" className="hide-on-med-and-down">My ❤️ Recipes</Link></li>
               <li><a href="/" onClick={() => Auth.logout()}>Logout</a></li>
             </>
           ) : (
