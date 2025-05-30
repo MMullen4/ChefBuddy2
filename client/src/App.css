@@ -1492,6 +1492,7 @@ label form [type='radio'] {
   width: 100%;
   max-width: 800px;
   opacity: 0.9;
+  margin-bottom: 20rem;
 }
 .recognition-container {
     background-image: url("./assets/images/ChefJohn.jpg") ;
@@ -1514,6 +1515,9 @@ label form [type='radio'] {
     padding: 1rem;
     background-color: #ff0000;
     border-bottom: 1px solid #ddd;
+}
+.card-top{
+  margin-top: 50rem;
 }
 
 @media (min-width: 1368px ){ 
