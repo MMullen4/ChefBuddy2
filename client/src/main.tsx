@@ -1,5 +1,5 @@
-import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 // Import Materialize CSS (from node_modules)
 import 'materialize-css/dist/css/materialize.min.css';
