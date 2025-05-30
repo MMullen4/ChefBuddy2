@@ -7,9 +7,9 @@ interface IComment {
 }
 
 interface IRecipe extends Document {
-  id: number;
+  _id: Schema.Types.ObjectId;
   title: string;
-  instructions: string;
+  instructions: string[];
   ingredients: Array<{
       name: string;
       quantity: string;
@@ -29,12 +29,16 @@ const commentSchema = new Schema<IComment>({
 });
 
 const recipeSchema = new Schema<IRecipe>({
+    _id: {
+        type: Schema.Types.ObjectId,
+        auto: true,
+    },
     title: {
         type: String,
         required: true,
     },
     instructions: {
-        type: String,
+        type: [String],
         required: true,
     },
     ingredients: [

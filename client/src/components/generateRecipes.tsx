@@ -1,7 +1,7 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { useState, useEffect } from 'react';
 import { GENERATE_RECIPES } from '../utils/queries';
-import { TOGGLE_FAVORITE } from '../utils/mutations';
+import { SAVE_RECIPE, TOGGLE_FAVORITE } from '../utils/mutations';
 
 
 const RecipeGenerator = () => {
@@ -10,8 +10,7 @@ const RecipeGenerator = () => {
   const [favoritesMap, setFavoritesMap] = useState<{ [key: string]: boolean }>({});
   const [getRecipes, { loading, data, error }] = useLazyQuery(GENERATE_RECIPES);
   const [toggleFavorite] = useMutation(TOGGLE_FAVORITE);
-
-
+  const [ saveRecipe ] = useMutation( SAVE_RECIPE );
 
   const addIngredient = () => {
     const trimmed = ingredient.trim();
@@ -33,7 +32,28 @@ const RecipeGenerator = () => {
   }
     console.log('Submitting ingredients:', ingredients)
 
-  getRecipes({ variables: { ingredients },  });
+  getRecipes({ variables: { ingredients },  }).then((response) => {
+    console.log('Recipes fetched:', response.data.generateRecipes);
+    const recipes = response.data.generateRecipes;
+    if (recipes && recipes.length > 0) {
+      recipes.forEach((recipe: { title: string; ingredients: string[]; instructions: string; _id: string }) => {
+        console.log('Saving recipe:', recipe.title);
+        saveRecipe({
+          variables: {
+            title: recipe.title,
+            ingredients: recipe.ingredients,
+            instructions: recipe.instructions,
+          },
+        }).then(() => {
+          console.log('Recipe saved successfully:', recipe.title);
+        }).catch((err) => {
+          console.error('Error saving recipe:', err);
+        });
+      });
+    }
+  }).catch((err) => {
+    console.error('Error fetching recipes:', err);
+  });
 };
 
   const handleToggleFavorite = async (recipeId: string) => {
