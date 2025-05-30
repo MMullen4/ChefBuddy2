@@ -364,16 +364,6 @@ footer.page-footer {
   display: inline-block;
 }
 
-.card .card-content .card-title.deep-orange-text:after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 50px;
-  height: 2px;
-  background: linear-gradient(90deg, #ff5722, #ff7043, #ff8a65);
-}
-
 /*==============================================================================
   4. FORM ELEMENTS
 ==============================================================================*/
@@ -509,7 +499,7 @@ span.badge.new {
 
 /* Custom utility classes for the theme */
 .primary-border {
-  border: 2px solid #ff5722 !important;
+  border: 2px solid #000000 !important;
 }
 
 .accent-border {
