@@ -1474,6 +1474,35 @@ label form [type='radio'] {
     align-items: center;
     background-repeat: no-repeat;
 }
+.faq-container {
+    background-image: url("./assets/images/ChefBuddy1.png") ;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    background-repeat: no-repeat;
+}
+.faq-box {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 800px;
+  opacity: 0.9;
+}
+.recognition-container {
+    background-image: url("./assets/images/ChefJohn.jpg") ;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    background-repeat: no-repeat;
+}
 .collapsible-header {
     display: -webkit-box;
     display: -webkit-flex;
@@ -1502,6 +1531,17 @@ label form [type='radio'] {
     background-size: contain; 
     }
 }
+    @media (min-width: 1368px ){ 
+    .faq-container {
+    background-size: contain; 
+    }
+}
+@media (min-width: 1368px ){ 
+    .recognition-container {
+    background-size: contain; 
+    }
+}
+
 /* col-sm */
 @media screen and (min-width: 640px) {
   .col-sm-auto {
