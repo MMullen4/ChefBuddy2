@@ -34,6 +34,7 @@ export const QUERY_ME = gql`
 export const GENERATE_RECIPES = gql`
   query GenerateRecipes($ingredients: [String!]!) {
     generateRecipes(ingredients: $ingredients) {
+      _id
       title
       ingredients
       instructions
