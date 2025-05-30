@@ -1,11 +1,16 @@
+
 import { Profile } from "../models/index.js";
-import { signToken, AuthenticationError } from "../utils/auth.js";
+import { signToken, AuthenticationError, UserExistsError } from "../utils/auth.js";
 import FridgeItem from "../models/fridgeModel.js";
 import { IResolvers } from "@graphql-tools/utils";
 import { AuthRequest } from "../utils/auth";
 import Recipe from "../models/recipeModel.js";
 import { OpenAI } from "openai";
-import recipeHistory from "../models/RecipeHistory.js";
+import RecipeHistory from "../models/RecipeHistory.js";
+import {
+  getUserRecipeHistory,
+  getUserRecipePath,
+} from "../utils/profilePath.js";
 
 interface Profile {
   _id: string;
@@ -35,6 +40,20 @@ const resolvers: IResolvers = {
         "savedRecipes"
       );
     },
+    myRecipePath: async (_parent: any, _args: any, context: any ) => {
+      if (!context.user) throw new AuthenticationError('You must be logged in.');
+      return await getUserRecipePath  (context.user._id);
+    },
+    myRecipeHistory: async (_parent: any, _args: any, context: { user: any }) => {
+      if (!context.user) throw new AuthenticationError('You must be logged in to view your recipe history.');
+      return await getUserRecipeHistory(context.user._id);  
+    },
+    myFavoriteRecipes: async (_parent: any, _args: any, context: { user: any }) => {
+      if (!context.user) throw new AuthenticationError('You must be logged in to view your favorite recipes.');
+      return await RecipeHistory.find({ profile: context.user._id, favorite: true })
+      .sort({ createdAt: -1 })
+      .populate('profile');
+    },
     getFridge: async (_parent: any, _args: any, context: { user: any }) => {
       if (!context.user)
         throw new AuthenticationError(
@@ -63,8 +82,9 @@ const resolvers: IResolvers = {
         Suggest a list of recipes based on the following ingredients: ${ingredients.join(
           ", "
         )}.
-        Please provide the recipes in JSON format, including the recipe name, ingredients, measurements, and instructions.
+        Please provide the recipes in JSON format, including the recipe name, ingredients, measurements, instructions, calories, and macros.
         Format like this: [{"title": "Pasta", "ingredients": ["Pasta", "Tomato"], "instructions": ["Boil pasta", "Add sauce"], "ratings": [], "comments": []}]
+        Please provide a unique recipeId for each recipe, and ensure the response is valid JSON. 
       `;
 
       const openai = getOpenAIClient();
@@ -90,11 +110,11 @@ const resolvers: IResolvers = {
         throw new Error("OpenAI response was not valid JSON.");
       }
 
-      // Optionally save to DB
-      await recipeHistory.create({
-        ingredients,
-        response: result,
-      });
+      // // Optionally save to DB
+      // await recipeHistory.create({
+      //   ingredients,
+      //   response: result,
+      // });
 
       return parsed;
     },
@@ -116,6 +136,13 @@ const resolvers: IResolvers = {
 
     register: async (_, { input }) => {
       const { username, email, password } = input;
+
+      // check if a profile with the same email already exists
+      const existingProfile = await Profile.findOne({ email });
+      if (existingProfile) {
+        throw new UserExistsError("A profile with this email already exists.");
+      }
+      // if not, create a new profile
       const profile = await Profile.create({ username, email, password });
       const token = signToken({
         _id: profile._id,
@@ -135,18 +162,30 @@ const resolvers: IResolvers = {
       ).populate("savedRecipes");
     },
 
-    favRecipe: async (_, { recipeId }, context: { req: AuthRequest }) => {
+    addComment: async (
+      _,
+      { recipeId, text },
+      context: { req: AuthRequest }
+    ) => {
       if (!context.req.user) throw new AuthenticationError("Not authenticated");
 
-      const recipe = await Recipe.findById(recipeId);
-      if (!recipe) throw new Error("Recipe not found");
-
-      recipe.favorite = !recipe.favorite;
-      await recipe.save();
-
-      return recipe;
-    },
-
+      const updatedRecipe = await Recipe.findByIdAndUpdate(
+        recipeId,
+        {
+          $push: {
+            comments: {
+              user: context.req.user.username,
+              text: text,
+              createdAt: new Date().toISOString(),
+            }
+          }
+        },
+        { new: true }
+      );
+      if (!updatedRecipe) throw new Error("Recipe not found");
+      return updatedRecipe;
+     },
+     
     addFridgeItem: async (_, { name }, context: { user: any }) => {
       if (!context.user)
         throw new AuthenticationError(
@@ -184,6 +223,14 @@ const resolvers: IResolvers = {
       });
       if (!deletedItem) throw new Error("Fridge item not found");
       return deletedItem;
+    },
+
+    toggleFavorite: async (_: any, { recipeId }: { recipeId: string }) => {
+      const recipe = await RecipeHistory.findById(recipeId);
+      if (!recipe) throw new Error('Recipe not found');
+      recipe.favorite = !recipe.favorite;
+      await recipe.save();
+      return recipe;
     },
   },
 };

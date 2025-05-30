@@ -1,14 +1,10 @@
+import path from 'node:path';
 import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 import dotenv from 'dotenv';
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 console.log('MONGODB_URI:', process.env.MONGODB_URI);
 
 import express, { Request, Response } from 'express';
-import path from 'node:path';
 import cors from 'cors';
 import db from './config/connection.js';
 import { ApolloServer } from '@apollo/server';
@@ -16,9 +12,15 @@ import { expressMiddleware } from '@apollo/server/express4';
 import { typeDefs, resolvers } from './schemas/index.js';
 import { authenticateToken } from './utils/auth.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+console.log(process.env);
+
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
+  resolvers
 });
 
 const startApolloServer = async () => {
@@ -35,8 +37,8 @@ const startApolloServer = async () => {
   // ✅ GraphQL setup
   app.use(
     '/graphql',
-    expressMiddleware(server as any, {
-      context: authenticateToken as any,
+    expressMiddleware(server, {
+      context: async({ req }) => authenticateToken({ req }),
     })
   );
 

@@ -1,7 +1,5 @@
-import React from 'react';
-
-
-const Faq: React.FC = () => {
+// Description: A simple FAQ page for a recipe suggestion app using React and Materialize CSS.
+const Faq = () => {
   return (
     <main className="faq-container">
       <div className="faq-box">

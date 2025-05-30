@@ -1,18 +1,11 @@
-/*==============================================================================
-  MATERIALIZE CUSTOM CSS
-  Custom Materialize theme with yellow accent-2 #ffff00 and deep-orange #ff5722
-==============================================================================*/
 
-/*==============================================================================
-  1. COLOR DEFINITIONS
-==============================================================================*/
 
 /* Primary color: deep-orange #ff5722 */
 .deep-orange {
   background-color: #ff5722 !important;
 }
 .deep-orange-text {
-  color: #ff5722 !important;
+  color: #000000 !important;
 }
 
 /* Accent color: yellow accent-2 #ffff00 */
@@ -42,12 +35,12 @@
 /* Animated Gradient for Nav and Footer */
 .nav-gradient {
   background: linear-gradient(135deg, 
-    #ff5722, #ff7043, #ff8a65, #ff7043, #ff5722,
-    #e64c66, #ff5722
+    #8B0000, #a00000, #b50000, #a00000, #8B0000,
+    #990000, #8B0000
   );
   background-size: 300% 300%;
   animation: gradient-animation 8s ease infinite;
-  box-shadow: 0 2px 12px rgba(255, 87, 34, 0.3);
+  box-shadow: 0 2px 12px rgba(139, 0, 0, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -60,9 +53,9 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(45deg, 
-    rgba(255, 255, 255, 0), 
-    rgba(255, 255, 255, 0.3), 
-    rgba(255, 255, 255, 0)
+    rgba(139, 0, 0, 0), 
+    rgba(255, 255, 255, 0.2), 
+    rgba(139, 0, 0, 0)
   );
   filter: blur(5px);
   opacity: 0;
@@ -73,12 +66,12 @@
 
 .footer-gradient {
   background: linear-gradient(135deg, 
-    #ff5722, #ff7043, #ff8a65, #ff7043, #ff5722,
-    #e64c66, #ff5722
+    #8B0000, #a00000, #b50000, #a00000, #8B0000,
+    #990000, #8B0000
   );
   background-size: 300% 300%;
   animation: gradient-animation 8s ease infinite;
-  box-shadow: 0 -2px 12px rgba(255, 87, 34, 0.3);
+  box-shadow: 0 -2px 12px rgba(139, 0, 0, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -91,9 +84,9 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(45deg, 
-    rgba(255, 255, 255, 0), 
-    rgba(255, 255, 255, 0.3), 
-    rgba(255, 255, 255, 0)
+    rgba(139, 0, 0, 0), 
+    rgba(255, 255, 255, 0.2), 
+    rgba(139, 0, 0, 0)
   );
   filter: blur(5px);
   opacity: 0;
@@ -182,8 +175,8 @@
 
 /* Nav and Footer */
 nav, .page-footer {
-  background-color: #ff5722;
-  box-shadow: 0 2px 10px rgba(255, 87, 34, 0.4);
+  background-color: #8B0000;
+  box-shadow: 0 2px 10px rgba(139, 0, 0, 0.4);
 }
 
 nav .brand-logo {
@@ -236,11 +229,6 @@ nav ul a:hover {
   padding: 5px 0;
 }
 
-.page-footer .footer-copyright {
-  height: 36px; /* Reduced from 56px */
-  line-height: 36px;
-  padding: 0 15px;
-}
 
 .page-footer .container {
   padding: 5px 0;
@@ -264,7 +252,6 @@ nav ul a:hover {
 }
 
 .card .card-content {
-  border: 2px solid #ff0000;
   border-radius: 6px;
 }
 
@@ -375,16 +362,6 @@ footer.page-footer {
   font-weight: 500;
   position: relative;
   display: inline-block;
-}
-
-.card .card-content .card-title.deep-orange-text:after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 50px;
-  height: 2px;
-  background: linear-gradient(90deg, #ff5722, #ff7043, #ff8a65);
 }
 
 /*==============================================================================
@@ -522,7 +499,7 @@ span.badge.new {
 
 /* Custom utility classes for the theme */
 .primary-border {
-  border: 2px solid #ff5722 !important;
+  border: 2px solid #000000 !important;
 }
 
 .accent-border {
