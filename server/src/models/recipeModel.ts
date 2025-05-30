@@ -7,7 +7,7 @@ interface IComment {
 }
 
 interface IRecipe extends Document {
-  id: number;
+  // id: number; not needed as Mongoose will handle the _id field
   title: string;
   instructions: string;
   ingredients: Array<{

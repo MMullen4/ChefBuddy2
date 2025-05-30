@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom/client'
+import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 // Import Materialize CSS (from node_modules)
@@ -12,7 +13,10 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Faq from './pages/Faq';
+
 import Recognition from './pages/Recognition';
+import PrivateRoute from './components/PrivateRoute';
+
 
 
 const router = createBrowserRouter([
@@ -23,7 +27,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />
+        element: (
+          <PrivateRoute>
+            <Home />
+          </PrivateRoute>
+        )
       },   {
         path: '/login',
         element: <Login />
