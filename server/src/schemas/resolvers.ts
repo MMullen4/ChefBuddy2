@@ -84,6 +84,7 @@ const resolvers: IResolvers = {
         )}.
         Please provide the recipes in JSON format, including the recipe name, ingredients, measurements, instructions, calories, and macros.
         Format like this: [{"title": "Pasta", "ingredients": ["Pasta", "Tomato"], "instructions": ["Boil pasta", "Add sauce"], "ratings": [], "comments": []}]
+        Please provide a unique _id for each recipe, and ensure the response is valid JSON.
       `;
 
       const openai = getOpenAIClient();
@@ -151,16 +152,14 @@ const resolvers: IResolvers = {
       return { token, profile };
     },
 
-    saveRecipe: async (_, { title, ingredients, instructions }, context: { req: AuthRequest }) => {
+    saveRecipe: async (_, { recipeId }, context: { req: AuthRequest }) => {
       if (!context.req.user) throw new AuthenticationError("Not authenticated");
-      await RecipeHistory.create({
-        title, 
-        ingredients,
-        instructions,
-      })
-      return await Profile.findById(
+
+      return await Profile.findByIdAndUpdate(
         context.req.user._id,
-      ).populate("favorites");
+        { $addToSet: { savedRecipes: recipeId } },
+        { new: true }
+      ).populate("savedRecipes");
     },
 
     addComment: async (
@@ -186,7 +185,7 @@ const resolvers: IResolvers = {
       if (!updatedRecipe) throw new Error("Recipe not found");
       return updatedRecipe;
      },
-
+     
     addFridgeItem: async (_, { name }, context: { user: any }) => {
       if (!context.user)
         throw new AuthenticationError(
@@ -226,17 +225,12 @@ const resolvers: IResolvers = {
       return deletedItem;
     },
 
-    toggleFavorite: async (_: any, { recipeId }: { recipeId: string }, context: { user: any }) => {
-      if (!context.user) {
-        throw new AuthenticationError('You must be logged in to toggle favorites.');
-      }
-      
-      const user = await Profile.findByIdAndUpdate(context.user._id, {
-        $push: { favorites: recipeId }},
-      {
-        new: true,
-      });
-      return user?.favorites;
+    toggleFavorite: async (_: any, { recipeId }: { recipeId: string }) => {
+      const recipe = await RecipeHistory.findById(recipeId);
+      if (!recipe) throw new Error('Recipe not found');
+      recipe.favorite = !recipe.favorite;
+      await recipe.save();
+      return recipe;
     },
   },
 };
