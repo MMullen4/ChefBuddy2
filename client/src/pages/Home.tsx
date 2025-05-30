@@ -1,6 +1,8 @@
 import RecipeGenerator from "../components/generateRecipes";
-
+import { useNavigate } from "react-router-dom";
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <main className="home-container">
     <div className="section">
@@ -27,7 +29,7 @@ const Home = () => {
         <div className="col s12 m4">
           <div className="card">
             <div className="card-content">
-              <span className="card-title deep-orange-text">Save Favorites</span>
+              <button onClick={() => navigate('/favorites')} className="card-title deep-orange-text">Save Favorites</button>
               <p>Store your favorite recipes for quick access later.</p>
             </div>
           </div>

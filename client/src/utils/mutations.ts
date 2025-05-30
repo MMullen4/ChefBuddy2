@@ -26,6 +26,17 @@ export const LOGIN_USER = gql`
   }
 `;
 
+export const SAVE_RECIPE = gql`
+  mutation SaveRecipe($title: String, $ingredients: [String], $instructions: [String]) {
+    saveRecipe(title: $title, ingredients: $ingredients, instructions: $instructions) {
+      favorites {
+      title
+      ingredients
+      instructions
+      }
+  } 
+}`
+
 export const TOGGLE_FAVORITE = gql`
   mutation ToggleFavorite($recipeId: ID!) {
     toggleFavorite(recipeId: $recipeId) {
