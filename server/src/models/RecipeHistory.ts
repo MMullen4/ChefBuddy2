@@ -14,7 +14,7 @@ export interface IRecipeHistory extends Document {
 }
 
 const RecipeHistorySchema = new Schema<IRecipeHistory>({
-    profile: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    profile: { type: mongoose.Schema.Types.ObjectId, ref: 'Username', required: true },
     _id: { type: Schema.Types.ObjectId, ref: '_id', auto: true },
     title: { type: String, required: true },
     instructions: [{ type: String, required: true }],

@@ -10,7 +10,7 @@ const typeDefs = gql`
   }
 
   type Recipe {
-    _id: ID
+    _id: ID!
     title: String!
     ingredients: [String]!
     instructions: [String]!
@@ -20,7 +20,7 @@ const typeDefs = gql`
   }
 
   type Comment {
-    user: String
+    username: String
     text: String
     createdAt: String
   }

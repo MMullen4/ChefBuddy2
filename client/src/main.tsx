@@ -14,6 +14,10 @@ import Signup from './pages/Signup';
 import Faq from './pages/Faq';
 import Favorites from './pages/Favorites';
 
+import Recognition from './pages/Recognition';
+import PrivateRoute from './components/PrivateRoute';
+
+
 
 const router = createBrowserRouter([
   {
@@ -23,7 +27,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />
+        element: (
+          <PrivateRoute>
+            <Home />
+          </PrivateRoute>
+        )
       },   {
         path: '/login',
         element: <Login />
@@ -39,6 +47,10 @@ const router = createBrowserRouter([
         path: '/favorites',
         element: <Favorites />
       },
+      {
+        path: '/recognition',
+        element: <Recognition />
+      }
       
     ]
   },
