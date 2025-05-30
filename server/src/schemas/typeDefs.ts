@@ -6,7 +6,7 @@ const typeDefs = gql`
     username: String!
     email: String!
     password: String!
-    savedRecipes: [Recipe]
+    favorites: [Recipe]
   }
 
   type Recipe {
@@ -48,11 +48,14 @@ type FridgeItem {
 }
 
 type RecipeHistory {
-  _id: ID!
   profile: Profile
+  _id: ID!
+  title: String
+  instructions: [String]
   ingredients: [String]
   response: String
   favorite: Boolean
+  mealType: String
   createdAt: String!
 }
 
@@ -63,7 +66,7 @@ type RecipeHistory {
     myRecipePath: String
     myRecipeHistory: [RecipeHistory]
     myFavoriteRecipes: [RecipeHistory]
-    getRecipeById(id: ID!): Recipe
+    getRecipeById(_id: ID!): Recipe
     getRecipeByIngredient(ingredient: String!): [Recipe]
     generateRecipes(ingredients: [String!]!): [Recipe!]!
     getFridge: [FridgeItem]!
@@ -72,12 +75,12 @@ type RecipeHistory {
   type Mutation {
   login(email: String!, password: String!): Auth
   register(input: ProfileInput!): Auth
-  saveRecipe(recipeId: ID!): Profile
+  saveRecipe(title: String, ingredients: [String], instructions: [String]): Profile
   rateRecipe(recipeId: ID!, rating: Int!): Recipe
   addComment(recipeId: ID!, text: String!): Recipe
   removeProfile: Profile
-  updateFridgeItem(id: ID!, name: String!): FridgeItem
-  deleteFridgeItem(id: ID!): FridgeItem
+  updateFridgeItem(_id: ID!, name: String!): FridgeItem
+  deleteFridgeItem(_id: ID!): FridgeItem
   addFridgeItem(name: String!): FridgeItem
   toggleFavorite(recipeId: ID!): RecipeHistory
   }
