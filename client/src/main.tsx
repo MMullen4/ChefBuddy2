@@ -13,7 +13,10 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Faq from './pages/Faq';
+
+import Recognition from './pages/Recognition';
 import PrivateRoute from './components/PrivateRoute';
+
 
 
 const router = createBrowserRouter([
@@ -39,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: '/faq',
         element: <Faq />
+      },
+      {
+        path: '/recognition',
+        element: <Recognition />
       }
       
     ]
