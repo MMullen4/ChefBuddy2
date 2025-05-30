@@ -1,13 +1,13 @@
 import { Schema, model, Document } from "mongoose";
 
 interface IComment {
-    user: string;
+    username: string;
     text: string;
     createdAt: Date;
 }
 
 interface IRecipe extends Document {
-  id: number;
+  // id: number; not needed as Mongoose will handle the _id field
   title: string;
   instructions: string;
   ingredients: Array<{
@@ -20,7 +20,7 @@ interface IRecipe extends Document {
 }
 
 const commentSchema = new Schema<IComment>({
-    user: String,
+    username: String,
     text: String,
     createdAt: {
         type: Date,
