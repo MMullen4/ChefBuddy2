@@ -82,7 +82,7 @@ const resolvers: IResolvers = {
         Suggest a list of recipes based on the following ingredients: ${ingredients.join(
           ", "
         )}.
-        Please provide the recipes in JSON format, including the recipe name, ingredients, measurements, and instructions.
+        Please provide the recipes in JSON format, including the recipe name, ingredients, measurements, instructions, calories, and macros.
         Format like this: [{"title": "Pasta", "ingredients": ["Pasta", "Tomato"], "instructions": ["Boil pasta", "Add sauce"], "ratings": [], "comments": []}]
         Please provide a unique recipeId for each recipe, and ensure the response is valid JSON. 
       `;
