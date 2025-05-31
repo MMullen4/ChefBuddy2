@@ -83,7 +83,14 @@ const resolvers: IResolvers = {
           ", "
         )}.
         Please provide the recipes in JSON format, including the recipe name, ingredients, measurements, instructions, category, calories, and macros.
-        Format like this: [{"title": "Pasta", "ingredients": ["Pasta", "Tomato"], "instructions": ["Boil pasta", "Add sauce"], "ratings": [], "comments": [], "category": ""}]
+        Please provide detailed instructions for each recipe, including preparation and cooking times.
+        Each recipe should include the following fields:
+        - title: The name of the recipe
+        - ingredients: An array of ingredient names including measurements
+        - instructions: An array of step-by-step instructions with proper punctuation, capitalization, and time requirements 
+        - category: The meal type (breakfast, lunch, dinner, or dessert)
+        - nutritionalInfo: An object containing calories, protein, carbs, and fat
+        Format like this: [{"title": "Pasta", "ingredients": ["Pasta", "Tomato"], "instructions": ["Boil pasta", "Add sauce"], "category": ""}]
         Each recipe should be catorgized as breakfast, lunch, dinner or dessert, ensure the category is included in the response as what would be the most likely value.
         Please provide a unique _id for each recipe, and ensure the response is valid JSON.
       `;

@@ -16,34 +16,48 @@ interface Recipe {
 }
 // function to fetch favorite recipes and toggle their favorite status
 const SaveFavorites: React.FC = () => {
-    const [filter, setFilter] = React.useState<string>('All');
+    const [filter] = React.useState<string>('All');
     const { loading, error, data, refetch } = useQuery(GET_FAVORITE_RECIPES);
     const [toggleFavorite] = useMutation(TOGGLE_FAVORITE, {
         onCompleted: () => refetch(),
     });
+    const [searchTerm, setSearchTerm] = React.useState<string>('');
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
-    const favoriteRecipes = data?.myRecipeHistory || []
-        .filter((recipe: Recipe) => recipe.favorite)
-        .filter((recipe: Recipe) => (filter === 'All' ? true : recipe.mealType === filter.toLowerCase()));
+    const favoriteRecipes = (data?.myRecipeHistory || [])
+    .filter((recipe: Recipe) => recipe.favorite)
+    .filter((recipe: Recipe) =>
+      filter === 'All' ? true : recipe.mealType?.toLowerCase() === filter.toLowerCase()
+    )
+    .filter((recipe: Recipe) => {
+      const term = searchTerm.toLowerCase();
+      return (
+        recipe.title?.toLowerCase().includes(term) ||
+        recipe.ingredients?.some(ing => ing.toLowerCase().includes(term)) ||
+        recipe.response?.toLowerCase().includes(term) ||
+        recipe.instructions?.some(inst => inst.toLowerCase().includes(term)) ||
+        recipe.mealType?.toLowerCase().includes(term)
+      );
+    });
+  
+    
+        
 
   // return the list of favorite recipes with filtering options
     return (
         <div className="p-4">
           <h2 className="text-3xl font-extrabold text-center mb-4">Your ❤️ Recipes</h2>
-          <div className="mb-4 space-x-2 text-right">
-            {['All', 'Breakfast', 'Lunch', 'Dinner', 'Dessert'].map((mealType) => (
-                <button
-                  key={mealType}
-                  className={`px-4 py-2 rounded ${filter === mealType ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                  onClick={() => setFilter(mealType)}
-                  >
-                    {mealType}
-                  </button>    
-        ))}
-          </div>
+          <div className="mb-4">
+  <input
+    type="text"
+    placeholder="Search by keyword or ingredient..."
+    className="px-4 py-2 border rounded w-full"
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+  />
+</div>
           {favoriteRecipes.length === 0 ? (
             <p>No favorites yet!</p>
           ) : (
