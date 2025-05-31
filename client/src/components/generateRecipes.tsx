@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { GENERATE_RECIPES } from '../utils/queries';
 import { SAVE_RECIPE, TOGGLE_FAVORITE } from '../utils/mutations';
 
@@ -18,7 +18,7 @@ const RecipeGenerator = () => {
   const [getRecipes, { loading, data, error }] = useLazyQuery(GENERATE_RECIPES);
   const [toggleFavorite] = useMutation(TOGGLE_FAVORITE);
   const [ saveRecipe ] = useMutation( SAVE_RECIPE );
-  const [ existingRecipes, setExistingRecipes ] = useState();
+  const [existingRecipes, setExistingRecipes] = useState<{ [key: string]: Recipe }>({});
 
 
   // Function to add an ingredient
@@ -59,7 +59,7 @@ const RecipeGenerator = () => {
           },
         }).then(( createdRecipe ) => {
           // console.log('Recipe saved successfully:', recipe.title);
-          setExistingRecipes((prev: any) => ({
+          setExistingRecipes((prev) => ({
             ...prev,
             [createdRecipe.data.saveRecipe._id]: createdRecipe.data.saveRecipe,
           }));
