@@ -43,6 +43,16 @@ function App() {
           <div className="nav-wrapper nav-gradient">
             <div className="container">
               <Link to="/" className="brand-logo">Chef Buddy</Link>
+              {/* Desktop-only "My Favorites" button */}
+{Auth.loggedIn() && (
+  <Link
+    to="/favorites"
+    className="right hide-on-med-and-down"
+    style={{ marginRight: '60px' }}
+  >
+    My ❤️ Recipes
+  </Link>
+)}
               {/* Always-visible burger icon */}
               <a href="#!" data-target="mobile-demo" className="sidenav-trigger right">
                 
@@ -65,7 +75,7 @@ function App() {
           <li><Link to="/">Home</Link></li>
           {Auth.loggedIn() ? (
             <>
-              <li><Link to="/favorites" className="hide-on-med-and-down">My ❤️ Recipes</Link></li>
+      
               <li><a href="/" onClick={() => Auth.logout()}>Logout</a></li>
             </>
           ) : (
