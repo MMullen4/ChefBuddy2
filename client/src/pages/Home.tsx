@@ -74,7 +74,7 @@ const Home = () => {
         <div className="col s12">
           <div className="card">
             <div className="card-content">
-              <span className="card-title deep-orange-text">Find Recipes<RecipeGenerator/></span>
+              <span className="card-title deep-orange-text">What's in your pantry?<RecipeGenerator/></span>
               <p>Discover new recipes based on ingredients you have at home.</p>
             </div>
           </div>

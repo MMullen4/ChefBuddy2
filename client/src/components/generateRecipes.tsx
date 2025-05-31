@@ -158,10 +158,10 @@ console.log('Existing Recipes:', existingRecipes);
       )}
 
       {/* Submit Button */}
-      <button onClick={handleSubmit}>Generate Recipes</button>
+      <button onClick={handleSubmit}>👨‍🍳 Let's Cook 🥄</button>
 
       {/* Results */}
-      {loading && <p className="mt-4">Loading...</p>}
+      {loading && <p className="mt-4">Finding recipes...</p>}
       {/* error && <p className="mt-4 text-red-500">Error: {error.message}</p> */}
       {error && (
         <p className="mt-4 text-red-500">

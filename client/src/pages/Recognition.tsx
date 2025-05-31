@@ -8,7 +8,7 @@ const Recognition = () => {
           <div className="card style={{ marginTop: '-40px' }}">
             <div className="card-content">
               <span className="card-title deep-orange-text">The Recognition award goes to...</span>
-              <p>JOHN BROWN!!!.</p>
+              <p>JOHN BROWN!!!</p>
             </div>
           </div>
         </div>
