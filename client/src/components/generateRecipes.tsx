@@ -27,12 +27,12 @@ const RecipeGenerator = () => {
         if (!existing) return;
   
         const alreadyFavorited = existing.myRecipeHistory.some(
-          (recipe: any) => recipe._id === toggleFavorite._id
+          (recipe: Recipe ) => recipe._id === toggleFavorite._id
         );
   
         const updatedFavorites = alreadyFavorited
           ? existing.myRecipeHistory.filter(
-              (r: any) => r._id !== toggleFavorite._id
+              (r: Recipe ) => r._id !== toggleFavorite._id
             )
           : [...existing.myRecipeHistory, toggleFavorite];
   
