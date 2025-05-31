@@ -87,7 +87,7 @@ const resolvers: IResolvers = {
         Each recipe should include the following fields:
         - title: The name of the recipe
         - ingredients: An array of ingredient names including measurements
-        - instructions: An array of step-by-step instructions with proper punctuation
+        - instructions: An array of step-by-step instructions with proper punctuation, capitalization, and time requirements 
         - category: The meal type (breakfast, lunch, dinner, or dessert)
         - nutritionalInfo: An object containing calories, protein, carbs, and fat
         Format like this: [{"title": "Pasta", "ingredients": ["Pasta", "Tomato"], "instructions": ["Boil pasta", "Add sauce"], "category": ""}]
