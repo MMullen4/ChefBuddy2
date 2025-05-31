@@ -1,6 +1,6 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { useState } from 'react';
-import { GENERATE_RECIPES } from '../utils/queries';
+import { GENERATE_RECIPES, GET_FAVORITE_RECIPES } from '../utils/queries';
 import { SAVE_RECIPE, TOGGLE_FAVORITE } from '../utils/mutations';
 
 // function to generate recipes based on ingredients
@@ -16,10 +16,36 @@ const RecipeGenerator = () => {
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [favoritesMap, setFavoritesMap] = useState<{ [key: string]: boolean }>({});
   const [getRecipes, { loading, data, error }] = useLazyQuery(GENERATE_RECIPES);
-  const [toggleFavorite] = useMutation(TOGGLE_FAVORITE);
   const [ saveRecipe ] = useMutation( SAVE_RECIPE );
   const [existingRecipes, setExistingRecipes] = useState<{ [key: string]: Recipe }>({});
-
+  
+  const [toggleFavorite] = useMutation(TOGGLE_FAVORITE, {
+    update(cache, { data: { toggleFavorite } }) {
+      try {
+        const existing = cache.readQuery<{ myRecipeHistory: Recipe[] }>({ query: GET_FAVORITE_RECIPES });
+  
+        if (!existing) return;
+  
+        const alreadyFavorited = existing.myRecipeHistory.some(
+          (recipe: any) => recipe._id === toggleFavorite._id
+        );
+  
+        const updatedFavorites = alreadyFavorited
+          ? existing.myRecipeHistory.filter(
+              (r: any) => r._id !== toggleFavorite._id
+            )
+          : [...existing.myRecipeHistory, toggleFavorite];
+  
+        cache.writeQuery({
+          query: GET_FAVORITE_RECIPES,
+          data: { myRecipeHistory: updatedFavorites },
+        });
+      } catch (err) {
+        // Cache might be empty — safe to ignore
+      }
+    },
+  });
+  
 
   // Function to add an ingredient
   const addIngredient = () => {
@@ -89,6 +115,7 @@ console.log('Existing Recipes:', existingRecipes);
       console.error('Error toggling favorite:', error);
     }
   };
+  // Removed unused toggleFavorites mutation
 
   // Fetch recipes when the component mounts or when the ingredients change
   // const recipes = data?.generateRecipes;

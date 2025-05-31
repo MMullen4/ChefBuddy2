@@ -233,14 +233,39 @@ const resolvers: IResolvers = {
     if (!context.user) throw new AuthenticationError("Not authenticated");
       const recipe = await RecipeHistory.findById(recipeId);
       if (!recipe) throw new Error('Recipe not found');
+      // const isFavorite = recipe.favorite;
       // recipe.favorite = !recipe.favorite;
       // await recipe.save();
-      await Profile.findByIdAndUpdate(
-        context.user._id,
-        { $push: { favorites: recipe } },
+      
+    //   if (!isFavorite) {
+    //   await Profile.findByIdAndUpdate(
+    //     context.user._id,
+    //     { $addToSet: { favorites: recipe._id } }, // Use $addToSet to avoid duplicates
+    //     { new: true }
+    //   );
+    // } else {
+    //   await Profile.findByIdAndUpdate(
+    //     context.user._id,
+    //     { $pull: { favorites: recipe._id } },
+    //     { new: true }
+    //   );
+    // }
+
+    const userProfile = await Profile.findById(context.user._id);
+    if (!userProfile) throw new Error("User profile not found");
+    const isFavorite = userProfile.favorites.includes(recipeId);
+
+    const update = isFavorite
+      ? { $pull: { favorites: recipeId } }
+      : { $addToSet: { favorites: recipeId } };
+  
+    await Profile.findByIdAndUpdate(context.user._id, update, { new: true });
+      return await RecipeHistory.findByIdAndUpdate(
+        recipeId,
+        { favorite: !recipe.favorite },
         { new: true }
-      )
-      return recipe;
+      );
+        // return recipe;
     },
   },
 };

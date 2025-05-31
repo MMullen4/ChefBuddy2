@@ -7,7 +7,9 @@ import { TOGGLE_FAVORITE } from '../utils/mutations';
 interface Recipe {
   _id: string;
   mealType: string;
+  title: string;
   ingredients: string[];
+  instructions: string[];
   response: string;
   favorite: boolean;
   createdAt: string;
@@ -30,8 +32,8 @@ const SaveFavorites: React.FC = () => {
   // return the list of favorite recipes with filtering options
     return (
         <div className="p-4">
-          <h2 className="text-2xl font-bold mb-4">Favorite Recipes</h2>
-          <div className="mb-4 space-x-2">
+          <h2 className="text-3xl font-extrabold text-center mb-4">Your ❤️ Recipes</h2>
+          <div className="mb-4 space-x-2 text-right">
             {['All', 'Breakfast', 'Lunch', 'Dinner', 'Dessert'].map((mealType) => (
                 <button
                   key={mealType}
@@ -48,15 +50,17 @@ const SaveFavorites: React.FC = () => {
             <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {favoriteRecipes.map((recipe: Recipe) => (
                 <li key={recipe._id} className="border p-4 rounded shadow bg-white">
-                  <h3 className="text-xl font-semibold mb-2">Meal: {recipe.mealType}</h3>
+                  <h3 className="text-xl font-extrabold mb-2"> 
+                    <span className="bg-red-100 border border-red-400 text-red-800 py-1 rounded" > {recipe.title} </span></h3>
+                  <p><strong>{ recipe.mealType }</strong></p>
                   <p><strong>Ingredients:</strong> {recipe.ingredients.join(', ')}</p>
-                  <p className="mt-2"><strong>Response:</strong> {recipe.response}</p>
-                  <p className="text-sm text-gray-500 mt-2">Created At: {new Date(recipe.createdAt).toLocaleDateString()}</p>
+                  <p className="mt-2"><strong>My Comments:</strong> {recipe.response}</p>
+                  <p className="text-sm text-gray-500 mt-2">{ recipe.instructions}</p>
                   <button
                     className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
                     onClick={() => toggleFavorite({ variables: { recipeId: recipe._id } })}
                     >
-                      {recipe.favorite ? '❤️' : '🤍'}
+                      {recipe.favorite ? '❤️' : '🤍' }
                   </button>
                 </li>
               ))}
