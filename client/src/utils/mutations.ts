@@ -29,11 +29,10 @@ export const LOGIN_USER = gql`
 export const SAVE_RECIPE = gql`
   mutation SaveRecipe($title: String, $ingredients: [String], $instructions: [String]) {
     saveRecipe(title: $title, ingredients: $ingredients, instructions: $instructions) {
-      favorites {
+      _id
       title
       ingredients
       instructions
-      }
   } 
 }`
 

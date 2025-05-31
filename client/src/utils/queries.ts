@@ -48,7 +48,6 @@ export const GET_FAVORITE_RECIPES = gql`
     myRecipeHistory {
     _id
     ingredients
-    response
     favorite
     createdAt
     mealType

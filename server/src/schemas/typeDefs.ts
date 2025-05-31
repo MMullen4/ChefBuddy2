@@ -53,10 +53,11 @@ type RecipeHistory {
   title: String
   instructions: [String]
   ingredients: [String]
-  response: String
   favorite: Boolean
   mealType: String
   createdAt: String!
+  comments: [Comment]
+  ratings: [Int]
 }
 
   type Query {
@@ -66,18 +67,18 @@ type RecipeHistory {
     myRecipePath: String
     myRecipeHistory: [RecipeHistory]
     myFavoriteRecipes: [RecipeHistory]
-    getRecipeById(_id: ID!): Recipe
-    getRecipeByIngredient(ingredient: String!): [Recipe]
-    generateRecipes(ingredients: [String!]!): [Recipe!]!
+    getRecipeById(_id: ID!): RecipeHistory
+    getRecipeByIngredient(ingredient: String!): [RecipeHistory]
+    generateRecipes(ingredients: [String!]!): [RecipeHistory!]!
     getFridge: [FridgeItem]!
   }
 
   type Mutation {
   login(email: String!, password: String!): Auth
   register(input: ProfileInput!): Auth
-  saveRecipe(title: String, ingredients: [String], instructions: [String]): Profile
-  rateRecipe(recipeId: ID!, rating: Int!): Recipe
-  addComment(recipeId: ID!, text: String!): Recipe
+  saveRecipe(title: String, ingredients: [String], instructions: [String]): RecipeHistory
+  rateRecipe(recipeId: ID!, rating: Int!): RecipeHistory
+  addComment(recipeId: ID!, text: String!): RecipeHistory
   removeProfile: Profile
   updateFridgeItem(_id: ID!, name: String!): FridgeItem
   deleteFridgeItem(_id: ID!): FridgeItem

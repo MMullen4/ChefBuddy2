@@ -1,5 +1,4 @@
 import Profile from '../models/Profile.js';
-import RecipeHistory from '../models/RecipeHistory.js';
 import { Types } from 'mongoose';
 
 export const getUserRecipePath = async (profileId: Types.ObjectId): Promise<string> => {
@@ -11,5 +10,7 @@ export const getUserRecipePath = async (profileId: Types.ObjectId): Promise<stri
 };
 
 export const getUserRecipeHistory = async (profileId: Types.ObjectId) => {
-  return await RecipeHistory.find({ profile: profileId }).populate('profile');
+  const favoriteRecipes = await Profile.findById(profileId).populate('favorites');
+  console.log('Favorite Recipes:', favoriteRecipes);
+  return favoriteRecipes?.favorites || [];
 };

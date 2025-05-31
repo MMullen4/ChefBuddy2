@@ -1,5 +1,5 @@
 import jwt, { JwtPayload }  from 'jsonwebtoken';
-import { Request } from 'express';
+
 import { GraphQLError } from 'graphql';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -49,7 +49,7 @@ export interface UserPayload {
   email: string;
   username: string;
 }
-export interface AuthRequest extends Request {
+export interface AuthRequest {
   user?: UserPayload;
 }
 
