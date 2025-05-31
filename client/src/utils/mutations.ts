@@ -27,8 +27,8 @@ export const LOGIN_USER = gql`
 `;
 
 export const SAVE_RECIPE = gql`
-  mutation SaveRecipe($title: String, $ingredients: [String], $instructions: [String]) {
-    saveRecipe(title: $title, ingredients: $ingredients, instructions: $instructions) {
+  mutation SaveRecipe($mealType: String, $title: String, $ingredients: [String], $instructions: [String]) {
+    saveRecipe( mealType: $mealType, title: $title, ingredients: $ingredients, instructions: $instructions) {
       _id
       title
       ingredients

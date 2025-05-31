@@ -153,10 +153,11 @@ const resolvers: IResolvers = {
       return { token, profile };
     },
 
-    saveRecipe: async (_, { title, ingredients, instructions }, context: AuthRequest ) => {
+    saveRecipe: async (_, { mealType, title, ingredients, instructions }, context: AuthRequest ) => {
       console.log("context", context );
       if (!context.user) throw new AuthenticationError("Not authenticated");
       const newRecipe = await RecipeHistory.create({
+        mealType,
         title,
         ingredients,
         instructions,

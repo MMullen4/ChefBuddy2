@@ -76,7 +76,7 @@ type RecipeHistory {
   type Mutation {
   login(email: String!, password: String!): Auth
   register(input: ProfileInput!): Auth
-  saveRecipe(title: String, ingredients: [String], instructions: [String]): RecipeHistory
+  saveRecipe(mealType: String, title: String, ingredients: [String], instructions: [String]): RecipeHistory
   rateRecipe(recipeId: ID!, rating: Int!): RecipeHistory
   addComment(recipeId: ID!, text: String!): RecipeHistory
   removeProfile: Profile
