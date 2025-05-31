@@ -65,7 +65,6 @@ function App() {
           <li><Link to="/">Home</Link></li>
           {Auth.loggedIn() ? (
             <>
-              <li><Link to="/me">Profile</Link></li>
               <li><Link to="/favorites" className="hide-on-med-and-down">My ❤️ Recipes</Link></li>
               <li><a href="/" onClick={() => Auth.logout()}>Logout</a></li>
             </>
