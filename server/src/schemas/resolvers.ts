@@ -70,10 +70,10 @@ const resolvers: IResolvers = {
       _: any,
       { ingredients }: { ingredients: string[] }
     ) => {
-      console.log(
-        "generateRecipes resolver called with ingredients:",
-        ingredients
-      );
+      // console.log(
+      //   "generateRecipes resolver called with ingredients:",
+      //   ingredients
+      // );
       if (!ingredients || ingredients.length === 0) {
         throw new Error("Please provide a list of ingredients.");
       }
@@ -82,8 +82,9 @@ const resolvers: IResolvers = {
         Suggest a list of recipes based on the following ingredients: ${ingredients.join(
           ", "
         )}.
-        Please provide the recipes in JSON format, including the recipe name, ingredients, measurements, instructions, calories, and macros.
-        Format like this: [{"title": "Pasta", "ingredients": ["Pasta", "Tomato"], "instructions": ["Boil pasta", "Add sauce"], "ratings": [], "comments": []}]
+        Please provide the recipes in JSON format, including the recipe name, ingredients, measurements, instructions, category, calories, and macros.
+        Format like this: [{"title": "Pasta", "ingredients": ["Pasta", "Tomato"], "instructions": ["Boil pasta", "Add sauce"], "ratings": [], "comments": [], "category": ""}]
+        Each recipe should be catorgized as breakfast, lunch, dinner or dessert, ensure the category is included in the response as what would be the most likely value.
         Please provide a unique _id for each recipe, and ensure the response is valid JSON.
       `;
 
@@ -94,7 +95,7 @@ const resolvers: IResolvers = {
         messages: [{ role: "user", content: prompt }],
       });
 
-      console.log("OpenAI Raw Response:", JSON.stringify(response, null, 2));
+      // console.log("OpenAI Raw Response:", JSON.stringify(response, null, 2));
 
       const result = response.choices[0].message?.content;
 
@@ -152,14 +153,17 @@ const resolvers: IResolvers = {
       return { token, profile };
     },
 
-    saveRecipe: async (_, { recipeId }, context: { req: AuthRequest }) => {
-      if (!context.req.user) throw new AuthenticationError("Not authenticated");
-
-      return await Profile.findByIdAndUpdate(
-        context.req.user._id,
-        { $addToSet: { savedRecipes: recipeId } },
-        { new: true }
-      ).populate("savedRecipes");
+    saveRecipe: async (_, { mealType, title, ingredients, instructions }, context: AuthRequest ) => {
+      console.log("context", context );
+      if (!context.user) throw new AuthenticationError("Not authenticated");
+      const newRecipe = await RecipeHistory.create({
+        mealType,
+        title,
+        ingredients,
+        instructions,
+        createdAt: new Date().toISOString(),
+      });
+      return newRecipe;
     },
 
     addComment: async (
@@ -225,11 +229,17 @@ const resolvers: IResolvers = {
       return deletedItem;
     },
 
-    toggleFavorite: async (_: any, { recipeId }: { recipeId: string }) => {
+    toggleFavorite: async (_: any, { recipeId }: { recipeId: string }, context: AuthRequest ) => {
+    if (!context.user) throw new AuthenticationError("Not authenticated");
       const recipe = await RecipeHistory.findById(recipeId);
       if (!recipe) throw new Error('Recipe not found');
-      recipe.favorite = !recipe.favorite;
-      await recipe.save();
+      // recipe.favorite = !recipe.favorite;
+      // await recipe.save();
+      await Profile.findByIdAndUpdate(
+        context.user._id,
+        { $push: { favorites: recipe } },
+        { new: true }
+      )
       return recipe;
     },
   },
