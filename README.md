@@ -43,7 +43,7 @@
 
 ChefBuddy is deployed on **Render**.
 
-🌐 **Live App**: 
+🌐 **Live App**: https://chefbuddy-as26.onrender.com
 
 ## 🤝 Collaboration
 Built with ❤️ by a team passionate about food, technology, and helping people make the most of what they already have. If you'd like to contribute, open a pull request or reach out!
