@@ -47,6 +47,8 @@ export const GET_FAVORITE_RECIPES = gql`
   query GetFavoriteRecipes {
     myRecipeHistory {
     _id
+    title
+    instructions
     ingredients
     favorite
     createdAt
