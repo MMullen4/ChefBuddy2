@@ -86,10 +86,9 @@ const resolvers: IResolvers = {
         Please provide detailed instructions for each recipe, including preparation and cooking times.
         Each recipe should include the following fields:
         - title: The name of the recipe
-        - ingredients: An array of ingredient names
-        - instructions: An array of step-by-step instructions
+        - ingredients: An array of ingredient names including measurements
+        - instructions: An array of step-by-step instructions with proper punctuation
         - category: The meal type (breakfast, lunch, dinner, or dessert)
-        - _id: A unique identifier for the recipe
         - nutritionalInfo: An object containing calories, protein, carbs, and fat
         Format like this: [{"title": "Pasta", "ingredients": ["Pasta", "Tomato"], "instructions": ["Boil pasta", "Add sauce"], "category": ""}]
         Each recipe should be catorgized as breakfast, lunch, dinner or dessert, ensure the category is included in the response as what would be the most likely value.
