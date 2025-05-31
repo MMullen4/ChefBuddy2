@@ -126,7 +126,7 @@ const RecipeGenerator = () => {
       {error && (
         <p className="mt-4 text-red-500">
           {error.message.includes("not valid JSON")
-            ? `One or more ingredients were not recognized. Please remove it and try again.`
+            ? `One or more ingredients were not recognized or really weird. Please remove it and try again.`
             : `Error: ${error.message}`}
         </p>
       )}
