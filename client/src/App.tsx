@@ -73,17 +73,17 @@ function App() {
         {/* Sidenav menu */}
         <ul className="sidenav" id="mobile-demo">
           <li><Link to="/">Home</Link></li>
+          <li><Link to="/faq">FAQ</Link></li>
+          <li><Link to="/recognition">Recognition</Link></li>
+          
           {Auth.loggedIn() ? (
             <>
-      
               <li><a href="/" onClick={() => Auth.logout()}>Logout</a></li>
             </>
           ) : (
             <>
               <li><Link to="/login">Login</Link></li>
               <li><Link to="/signup">Signup</Link></li>
-              <li><Link to="/faq">FAQ</Link></li>
-              <li><Link to="/recognition">Recognition</Link></li>
             </>
           )}
         </ul>
@@ -98,9 +98,6 @@ function App() {
               <div className="col l6 s12">
                 <h6 className="white-text">Chef Buddy</h6>
                 <p className="grey-text text-lighten-4 footer-text">Your personal recipe assistant</p>
-              </div>
-              <div className="col l4 offset-l2 s12">
-                <h6 className="white-text">© 2025 Chef Buddy</h6>
               </div>
             </div>
           </div>
