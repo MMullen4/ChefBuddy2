@@ -1,12 +1,11 @@
 import React from 'react';
 // Import images with correct paths and types
-// @ts-ignore - Importing image assets
+// @ts-expect-error - Importing image assets
 import LoginImage from '../assets/images/Login_page_1.PNG';
-// @ts-ignore - Importing image assets
+// @ts-expect-error - Importing image assets
 import SignupImage from '../assets/images/Signup_page_1.PNG';
-// @ts-ignore - Importing image assets
 import MenuImage from '../assets/images/Menu_page_1.png';
-// @ts-ignore - Importing image assets
+// @ts-expect-error - Importing image assets
 import FavImage from '../assets/images/Fav_page_1.PNG';
 
 const HowTo: React.FC = () => {
