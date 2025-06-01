@@ -15,6 +15,7 @@ import Faq from './pages/Faq';
 import Favorites from './pages/Favorites';
 
 import Recognition from './pages/Recognition';
+import HowTo from './pages/HowTo';
 import PrivateRoute from './components/PrivateRoute';
 
 
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: '/recognition',
         element: <Recognition />
+      },
+      {
+        path: '/howto',
+        element: <HowTo />
       }
       
     ]
