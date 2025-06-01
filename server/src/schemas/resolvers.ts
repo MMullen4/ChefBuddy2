@@ -40,19 +40,19 @@ const resolvers: IResolvers = {
         "savedRecipes"
       );
     },
-    myRecipePath: async (_parent: any, _args: any, context: any ) => {
+    myRecipePath: async (_parent: any, _args: any, context: any) => {
       if (!context.user) throw new AuthenticationError('You must be logged in.');
-      return await getUserRecipePath  (context.user._id);
+      return await getUserRecipePath(context.user._id);
     },
     myRecipeHistory: async (_parent: any, _args: any, context: { user: any }) => {
       if (!context.user) throw new AuthenticationError('You must be logged in to view your recipe history.');
-      return await getUserRecipeHistory(context.user._id);  
+      return await getUserRecipeHistory(context.user._id);
     },
     myFavoriteRecipes: async (_parent: any, _args: any, context: { user: any }) => {
       if (!context.user) throw new AuthenticationError('You must be logged in to view your favorite recipes.');
       return await RecipeHistory.find({ profile: context.user._id, favorite: true })
-      .sort({ createdAt: -1 })
-      .populate('profile');
+        .sort({ createdAt: -1 })
+        .populate('profile');
     },
     getFridge: async (_parent: any, _args: any, context: { user: any }) => {
       if (!context.user)
@@ -80,8 +80,8 @@ const resolvers: IResolvers = {
 
       const prompt = `
         Suggest a list of recipes based on the following ingredients: ${ingredients.join(
-          ", "
-        )}.
+        ", "
+      )}.
         Please provide the recipes in JSON format, including the recipe name, ingredients, measurements, instructions, category, calories, and macros.
         Please provide detailed instructions for each recipe, including preparation and cooking times.
         Each recipe should include the following fields:
@@ -92,14 +92,19 @@ const resolvers: IResolvers = {
         - nutritionalInfo: An object containing calories, protein, carbs, and fat
         Format like this: [{"title": "Pasta", "ingredients": ["Pasta", "Tomato"], "instructions": ["Boil pasta", "Add sauce"], "category": ""}]
         Each recipe should be catorgized as breakfast, lunch, dinner or dessert, ensure the category is included in the response as what would be the most likely value.
-        Please provide a unique _id for each recipe, and ensure the response is valid JSON.
+        Please provide a unique _id for each recipe, and ensure the response is valid JSON that does not include markdown, explainations, or extra formatting.
       `;
 
       const openai = getOpenAIClient();
 
       const response = await openai.chat.completions.create({
-        model: "gpt-4",
-        messages: [{ role: "user", content: prompt }],
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "system",
+            content: "Respond only with raw JSON. Do not include markdown formatting or explanation.",
+          },
+          { role: "user", content: prompt }],
       });
 
       // console.log("OpenAI Raw Response:", JSON.stringify(response, null, 2));
@@ -110,21 +115,36 @@ const resolvers: IResolvers = {
         throw new Error("No response from OpenAI");
       }
 
+      // clean markdown formatting if present
+      const cleaned = result.replace(/```json|```/g, '').trim();
+
       let parsed;
       try {
-        parsed = JSON.parse(result);
+        parsed = JSON.parse(cleaned); // parse the cleaned JSON string
       } catch (error) {
-        console.error("Failed to parse OpenAI response:", result);
+        console.error("Failed to parse OpenAI response:", cleaned);
         throw new Error("OpenAI response was not valid JSON.");
       }
 
-      // // Optionally save to DB
-      // await recipeHistory.create({
-      //   ingredients,
-      //   response: result,
-      // });
+      // post-process the parsed recipes to ensure they have the correct structure
+      const fixed = parsed.map((recipe: any) => {
+        const nutrition = recipe.nutritionalInfo || {};
 
-      return parsed;
+        const normalize = (value: any) =>
+          typeof value === 'string' ? value : `${value}`;
+
+        return {
+          ...recipe,
+          nutritionalInfo: {
+            calories: Number(nutrition.calories) || 0,
+            protein: normalize(nutrition.protein),
+            carbs: normalize(nutrition.carbs),
+            fat: normalize(nutrition.fat),
+          },
+        };
+      });
+
+      return fixed;
     },
   },
 
