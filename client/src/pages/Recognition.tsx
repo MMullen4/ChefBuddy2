@@ -1,5 +1,5 @@
-
 const Recognition = () => {
+<<<<<<< HEAD
     return (
         <main className="recognition-container">
         <div className="section">
@@ -16,6 +16,26 @@ const Recognition = () => {
       </div>
     </main>
     );
+=======
+  return (
+   <main
+  className="recognition-container"
+  style={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100vh',
+  }}
+>
+  <div className="card" style={{ width: '400px' }}>
+    <div className="card-content">
+      <span className="card-title deep-orange-text">The Recognition award goes to...</span>
+      <p>JOHN BROWN!!!</p>
+    </div>
+  </div>
+</main>
+  );
+>>>>>>> main
 };
 
 export default Recognition;
