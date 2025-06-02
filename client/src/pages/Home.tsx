@@ -45,7 +45,8 @@ const Home = () => {
           <div className="col s12">
             <div className={`card welcome-card ${isExiting ? 'exit' : ''}`}>
               <div className="card-content">
-                <span className="card-title deep-orange-text">Welcome to Chef Buddy</span>
+                <span className="card-title deep-orange-text">Welcome to Chef&nbsp;Buddy</span>
+
                 <p>Your personal recipe assistant to help you discover and create delicious meals.</p>
                 <div className="food-emoji-container">
                   <span className="food-emoji">🍔</span>

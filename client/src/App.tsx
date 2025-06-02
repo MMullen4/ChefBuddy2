@@ -75,6 +75,7 @@ function App() {
           <li><Link to="/">Home</Link></li>
           <li><Link to="/faq">FAQ</Link></li>
           <li><Link to="/recognition">Recognition</Link></li>
+          <li><Link to="/favorites">My ❤️ Recipes</Link></li>
           
           {Auth.loggedIn() ? (
             <>
@@ -92,19 +93,16 @@ function App() {
           <Outlet />
         </main>
 
-        <footer className="page-footer footer-gradient compact-footer">
-          <div className="container">
-            <div className="row footer-row">
-              <div className="col l6 s12">
-                <h6 className="white-text">Chef Buddy</h6>
-                <p className="grey-text text-lighten-4 footer-text">Your personal recipe assistant</p>
-              </div>
-            </div>
-          </div>
-          <div className="footer-copyright">
-            <div className="container">© 2025 Chef Buddy</div>
-          </div>
-        </footer>
+       <footer className="page-footer footer-gradient compact-footer">
+  <div className="container">
+    <div className="row footer-row">
+      <div className="col s12">
+        <h4 className="left-align" style={{ marginBottom: 0 }}>© 2025 Chef Buddy</h4>
+        <p className="grey-text text-lighten-3 left-align">Your personal recipe assistant</p>
+      </div>
+    </div>
+  </div>
+</footer>
 
         {/* Inline style to always show the burger */}
         <style>
