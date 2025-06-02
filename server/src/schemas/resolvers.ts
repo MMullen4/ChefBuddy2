@@ -84,6 +84,7 @@ const resolvers: IResolvers = {
         )}.
         Please provide the recipes in JSON format, including the recipe name, ingredients, measurements, instructions, category, calories, and macros.
         Please provide detailed instructions for each recipe, including preparation and cooking times.
+        The recipes can include more ingredients than those provided, but should primarily use the given ingredients.
         Each recipe should include the following fields:
         - title: The name of the recipe
         - ingredients: An array of ingredient names including measurements
