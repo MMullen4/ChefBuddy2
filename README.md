@@ -3,6 +3,11 @@
 **ChefBuddy** is your personal AI-powered kitchen assistant. Just enter the ingredients you have at home, and ChefBuddy will generate delicious recipe recommendations — all tailored to what you already own. Save your favorite recipes, filter by meal type, leave notes, and even have AI help you meal prep for the week.
 
 ---
+![Screenshot_2-6-2025_13289_chefbuddy-as26 onrender com](https://github.com/user-attachments/assets/8c52d662-7035-46ca-9fdd-eac272511777)
+
+![Screenshot_2-6-2025_132613_chefbuddy-as26 onrender com](https://github.com/user-attachments/assets/4bf03220-4615-4989-8d88-9b413182f937)
+
+
 
 ## 🚀 Features
 
