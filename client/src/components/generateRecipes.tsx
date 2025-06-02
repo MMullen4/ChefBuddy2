@@ -166,7 +166,7 @@ console.log('Existing Recipes:', existingRecipes);
       {error && (
         <p className="mt-4 text-red-500">
           {error.message.includes("not valid JSON")
-            ? `One or more ingredients were not recognized or really weird. Please remove it and try again.`
+            ? `SORRY ! There seems to be a glitch in the matrix! Please remove any weird ingredients and/or resubmit form.`
             : `Error: ${error.message}`}
         </p>
       )}
