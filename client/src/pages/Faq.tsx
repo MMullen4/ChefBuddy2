@@ -1,8 +1,15 @@
-// Description: A simple FAQ page for a recipe suggestion app using React and Materialize CSS.
 const Faq = () => {
   return (
-    <main className="faq-container">
-      <div className="faq-box">
+    <main
+      className="faq-container"
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+      }}
+    >
+      <div className="faq-box" style={{ maxWidth: '600px', width: '100%' }}>
         <h4 className="center-align">Frequently Asked Questions</h4>
 
         <ul className="collapsible popout">
