@@ -1,5 +1,14 @@
 // Description: A simple FAQ page for a recipe suggestion app using React and Materialize CSS.
+import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import M from 'materialize-css';
+
 const Faq = () => {
+  useEffect(() => {
+    // Initialize Materialize collapsible
+    const elems = document.querySelectorAll('.collapsible');
+    M.Collapsible.init(elems);
+  }, []);
   return (
     <main className="faq-container">
       <div className="faq-box">
@@ -9,11 +18,11 @@ const Faq = () => {
           <li>
             <div className="collapsible-header">
               <i className="material-icons">question_answer</i>
-              <b>How does the app work?</b>
+              <b>How does the app work? <Link to="/howto" className="blue-text waves-effect waves-light">Click HERE</Link></b>
             </div>
             <div className="p-4">
               <span>
-                You simply type in the ingredients you have in your fridge, and our AI will generate a recipe suggestion for you!
+                You type in the ingredients, and our AI will generate a recipe suggestion for you!
               </span>
             </div>
           </li>
