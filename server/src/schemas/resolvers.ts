@@ -283,6 +283,7 @@ const resolvers: IResolvers = {
       context: AuthRequest
     ) => {
       if (!context.user) throw new AuthenticationError("Not authenticated");
+
       const recipe = await RecipeHistory.findById(recipeId);
       if (!recipe) throw new Error("Recipe not found");
 
@@ -294,27 +295,33 @@ const resolvers: IResolvers = {
       if (!userProfile) throw new Error("User profile not found");
 
       const isFavorite = userProfile.favorites.includes(recipeId);
+
       const update = isFavorite
         ? { $pull: { favorites: recipeId } }
         : { $addToSet: { favorites: recipeId } };
 
       await Profile.findByIdAndUpdate(userId, update, { new: true });
 
-      // const userProfile = await Profile.findById(context.user._id);
-      // if (!userProfile) throw new Error("User profile not found");
-      // const isFavorite = userProfile.favorites.includes(recipeId);
-
-      // const update = isFavorite
-      //   ? { $pull: { favorites: recipeId } }
-      //   : { $addToSet: { favorites: recipeId } };
-
-      // await Profile.findByIdAndUpdate(context.user._id, update, { new: true });
-      return await RecipeHistory.findByIdAndUpdate(
+      // Update the recipe's favorite status
+      // return await RecipeHistory.findByIdAndUpdate(
+      //   recipeId,
+      //   { favorite: !recipe.favorite },
+      //   { new: true }
+      // );
+      
+      const updatedRecipe = await RecipeHistory.findByIdAndUpdate(
         recipeId,
         { favorite: !recipe.favorite },
         { new: true }
+      ).select(
+        "_id title ingredients instructions comments favorite createdAt mealType"
       );
-      // return recipe;
+
+      if (!updatedRecipe) {
+        throw new Error("Failed to update recipe");
+      }
+
+      return updatedRecipe;
     },
   },
 };

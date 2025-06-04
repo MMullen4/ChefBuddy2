@@ -154,21 +154,6 @@ const RecipeGenerator = () => {
     }
   };
 
-  // Removed unused toggleFavorites mutation
-
-  // Fetch recipes when the component mounts or when the ingredients change
-  // const recipes = data?.generateRecipes;
-  // // {console.log(recipes)}
-  // useEffect(() => {
-  //   if (recipes) {
-  //     const initialFavorites: { [key: string]: boolean } = {};
-  //     recipes.forEach((recipe: { _id: string; favorite?: boolean }) => {
-  //       initialFavorites[recipe._id] = recipe.favorite ?? false;
-  //     });
-  //     setFavoritesMap(initialFavorites);
-  //   }
-  // }, [recipes]);
-
   // Render the component and handle user interactions
   return (
     <div>

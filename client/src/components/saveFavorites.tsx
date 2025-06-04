@@ -126,7 +126,7 @@ const SaveFavorites: React.FC = () => {
                 <strong>Ingredients:</strong> {recipe.ingredients.join(", ")}
               </p>
               <p className="mt-2">
-                <strong>My Comments:</strong> {recipe.response}
+                <strong>Directions:</strong> {recipe.response}
               </p>
               <p className="text-sm text-gray-500 mt-2">
                 {recipe.instructions.join(" ")}
@@ -136,15 +136,21 @@ const SaveFavorites: React.FC = () => {
                 <div className="mt-4">
                   <h4 className="font-bold">Comments:</h4>
                   <ul className="mt-2">
-                    {recipe.comments.map((comment, index) => (
-                      <li key={index} className="border-b pb-2 mb-2">
-                        <p className="text-sm">{comment.text}</p>
-                        <p className="text-xs text-gray-500">
-                          By {comment.username} on{" "}
-                          {new Date(comment.createdAt).toLocaleDateString()}
-                        </p>
-                      </li>
-                    ))}
+                    {recipe.comments.map((comment, index) => {
+                      const createdAt =
+                        comment.createdAt &&
+                        !isNaN(new Date(comment.createdAt).getTime())
+                          ? new Date(comment.createdAt).toLocaleDateString()
+                          : "Unknown Date";
+                      return (
+                        <li key={index} className="border-b pb-2 mb-2">
+                          <p className="text-sm">{comment.text}</p>
+                          <p className="text-xs text-gray-500">
+                            By {comment.username} on {createdAt}
+                          </p>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               )}
@@ -156,6 +162,19 @@ const SaveFavorites: React.FC = () => {
                     placeholder="Add a comment..."
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        if (commentText.trim()) {
+                          addComment({
+                            variables: {
+                              recipeId: recipe._id,
+                              text: commentText.trim(),
+                            },
+                          });
+                        }
+                      }
+                    }}
                   />
                   <div className="flex justify-end mt-2">
                     <button
@@ -168,7 +187,7 @@ const SaveFavorites: React.FC = () => {
                       Cancel
                     </button>
                     <button
-                      className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors duration-200 font-medium shadow-sm hover:shadow-md"
+                      className="px-3 py-1 !bg-green-400 text-blue rounded mr-2 hover:!bg-gray-500 transition-colors duration-200 font-medium shadow-sm hover:shadow-md"
                       onClick={() => {
                         console.log("Adding comment:", recipe._id);
                         if (commentText.trim()) {
