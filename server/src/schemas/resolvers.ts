@@ -265,7 +265,7 @@ const resolvers: IResolvers = {
     const userId = context.user?._id;
       if (!userId) throw new AuthenticationError("User ID missing in context");
 
-    const userProfile = await Profile.findById(context.userId);
+    const userProfile = await Profile.findById(userId);
     if (!userProfile) throw new Error("User profile not found");
       
     const isFavorite = userProfile.favorites.includes(recipeId);
