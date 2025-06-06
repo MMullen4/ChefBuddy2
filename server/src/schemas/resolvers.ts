@@ -197,23 +197,21 @@ const resolvers: IResolvers = {
     addComment: async (
       _,
       { recipeId, text },
-      context: { req: AuthRequest }
-    ) => {
-      if (!context.req.user) throw new AuthenticationError("Not authenticated");
+      context) => {
+      if (!context.user) throw new AuthenticationError("Not authenticated");
 
-      const updatedRecipe = await Recipe.findByIdAndUpdate(
+      const comment = {
+        username: context.user.username,
+        text,
+        createdAt: new Date().toISOString(),
+      };
+
+      const updatedRecipe = await RecipeHistory.findByIdAndUpdate(
         recipeId,
-        {
-          $push: {
-            comments: {
-              user: context.req.user.username,
-              text: text,
-              createdAt: new Date().toISOString(),
-            }
-          }
-        },
-        { new: true }
+        { $push: { comments: comment } },
+          { new: true }
       );
+      
       if (!updatedRecipe) throw new Error("Recipe not found");
       return updatedRecipe;
      },
@@ -259,41 +257,24 @@ const resolvers: IResolvers = {
 
     toggleFavorite: async (_: any, { recipeId }: { recipeId: string }, context: AuthRequest ) => {
     if (!context.user) throw new AuthenticationError("Not authenticated");
+      
       const recipe = await RecipeHistory.findById(recipeId);
       if (!recipe) throw new Error('Recipe not found');
-      // const isFavorite = recipe.favorite;
-      // recipe.favorite = !recipe.favorite;
-      // await recipe.save();
-      
-    //   if (!isFavorite) {
-    //   await Profile.findByIdAndUpdate(
-    //     context.user._id,
-    //     { $addToSet: { favorites: recipe._id } }, // Use $addToSet to avoid duplicates
-    //     { new: true }
-    //   );
-    // } else {
-    //   await Profile.findByIdAndUpdate(
-    //     context.user._id,
-    //     { $pull: { favorites: recipe._id } },
-    //     { new: true }
-    //   );
-    // }
 
-    const userProfile = await Profile.findById(context.user._id);
+    // check if the users profile exists & if the recipe is already a fav
+    const userId = context.user?._id;
+      if (!userId) throw new AuthenticationError("User ID missing in context");
+
+    const userProfile = await Profile.findById(context.userId);
     if (!userProfile) throw new Error("User profile not found");
+      
     const isFavorite = userProfile.favorites.includes(recipeId);
 
     const update = isFavorite
       ? { $pull: { favorites: recipeId } }
       : { $addToSet: { favorites: recipeId } };
   
-    await Profile.findByIdAndUpdate(context.user._id, update, { new: true });
-      return await RecipeHistory.findByIdAndUpdate(
-        recipeId,
-        { favorite: !recipe.favorite },
-        { new: true }
-      );
-        // return recipe;
+    await Profile.findByIdAndUpdate(userId, update, { new: true });
     },
   },
 };
