@@ -127,10 +127,15 @@ const SaveFavorites: React.FC = () => {
                   <h4 className="font-bold">Comments:</h4>
                   <ul className="mt-2">
                     {recipe.comments.map((comment, index) => {
+                      // debugging: log the comment to check its structure
+                      console.log('comment date debug:', {
+                        rawDate: comment.createdAt,
+                        isValid: comment.createdAt && !isNaN(new Date(comment.createdAt).getTime()),
+                        parsedDate: comment.createdAt ? new Date(comment.createdAt) : null,
+                      })
+                      // ensure createdAt is a valid date annd convert it to a readable format
                       const createdAt =
-                        comment.createdAt &&
-                        !isNaN(new Date(comment.createdAt).getTime())
-                          ? new Date(comment.createdAt).toLocaleDateString()
+                        comment.createdAt ? new Date(parseInt(comment.createdAt)).toLocaleDateString()
                           : "Unknown Date";
                       return (
                         <li key={index} className="border-b pb-2 mb-2">
