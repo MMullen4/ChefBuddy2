@@ -1,6 +1,12 @@
+import dotenv from 'dotenv';
 import path from 'node:path';
 import { fileURLToPath } from 'url';
-import dotenv from 'dotenv';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+import jwt from 'jsonwebtoken';
 
 console.log('MONGODB_URI:', process.env.MONGODB_URI);
 
@@ -10,13 +16,15 @@ import db from './config/connection.js';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { typeDefs, resolvers } from './schemas/index.js';
-import { authenticateToken } from './utils/auth.js';
+// import { authenticateToken } from './utils/auth.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
-
-console.log(process.env);
+interface DecodedUserPayload extends jwt.JwtPayload {
+  data: {
+    _id: string;
+    username: string;
+    email: string;
+  };
+}
 
 const server = new ApolloServer({
   typeDefs,
@@ -38,7 +46,23 @@ const startApolloServer = async () => {
   app.use(
     '/graphql',
     expressMiddleware(server, {
-      context: async({ req }) => authenticateToken({ req }),
+      context: async ({ req }) => {
+        const authHeader = req.headers.authorization || '';
+        const token = authHeader.split(' ')[1];
+        const secret = process.env.JWT_SECRET_KEY;
+        
+        if (!token || !secret) {
+          return {};
+        };
+
+        try {
+          const decoded = jwt.verify(token, secret) as DecodedUserPayload;
+          return { user: decoded.data };
+        } catch (err) {
+          console.error('Error verifying token:', err);
+          return {};
+        }
+      },
     })
   );
 

@@ -194,10 +194,7 @@ const resolvers: IResolvers = {
       return newRecipe;
     },
 
-    addComment: async (
-      _,
-      { recipeId, text },
-      context) => {
+    addComment: async (_, { recipeId, text }, context) => {
       if (!context.user) throw new AuthenticationError("Not authenticated");
 
       const comment = {
