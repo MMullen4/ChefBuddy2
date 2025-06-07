@@ -301,14 +301,8 @@ const resolvers: IResolvers = {
         : { $addToSet: { favorites: recipeId } };
 
       await Profile.findByIdAndUpdate(userId, update, { new: true });
-
-      // Update the recipe's favorite status
-      // return await RecipeHistory.findByIdAndUpdate(
-      //   recipeId,
-      //   { favorite: !recipe.favorite },
-      //   { new: true }
-      // );
       
+      // Update the recipe's favorite status
       const updatedRecipe = await RecipeHistory.findByIdAndUpdate(
         recipeId,
         { favorite: !recipe.favorite },
