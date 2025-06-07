@@ -256,25 +256,40 @@ const resolvers: IResolvers = {
     },
 
     toggleFavorite: async (_: any, { recipeId }: { recipeId: string }, context: AuthRequest ) => {
-    if (!context.user) throw new AuthenticationError("Not authenticated");
-      
-      const recipe = await RecipeHistory.findById(recipeId);
-      if (!recipe) throw new Error('Recipe not found');
+      if (!context.user) throw new AuthenticationError("Not authenticated");
 
-    // check if the users profile exists & if the recipe is already a fav
-    const userId = context.user?._id;
+      const recipe = await RecipeHistory.findById(recipeId);
+      if (!recipe) throw new Error("Recipe not found");
+
+      // check if the users profile exists & if the recipe is already a fav
+      const userId = context.user?._id;
       if (!userId) throw new AuthenticationError("User ID missing in context");
 
-    const userProfile = await Profile.findById(userId);
-    if (!userProfile) throw new Error("User profile not found");
-      
-    const isFavorite = userProfile.favorites.includes(recipeId);
+      const userProfile = await Profile.findById(userId);
+      if (!userProfile) throw new Error("User profile not found");
 
-    const update = isFavorite
-      ? { $pull: { favorites: recipeId } }
-      : { $addToSet: { favorites: recipeId } };
-  
-    await Profile.findByIdAndUpdate(userId, update, { new: true });
+      const isFavorite = userProfile.favorites.includes(recipeId);
+
+      const update = isFavorite
+        ? { $pull: { favorites: recipeId } }
+        : { $addToSet: { favorites: recipeId } };
+
+      await Profile.findByIdAndUpdate(userId, update, { new: true });
+      
+      // Update the recipe's favorite status
+      const updatedRecipe = await RecipeHistory.findByIdAndUpdate(
+        recipeId,
+        { favorite: !recipe.favorite },
+        { new: true }
+      ).select(
+        "_id title ingredients instructions comments favorite createdAt mealType"
+      );
+
+      if (!updatedRecipe) {
+        throw new Error("Failed to update recipe");
+      }
+
+      return updatedRecipe;
     },
   },
 };
