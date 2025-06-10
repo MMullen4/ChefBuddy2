@@ -16,7 +16,10 @@ console.log("ENV loaded from:", envPath);
 console.log("process.env.MONGODB_URI:", process.env.MONGODB_URI);
 
 const db = async (): Promise<typeof mongoose.connection> => {
+  console.log(" all env variables :", Object.keys(process.env));
+
   const MONGODB_URI = process.env.MONGODB_URI;
+  console.log("MONGODB_URI:", MONGODB_URI);
 
   if (!MONGODB_URI) {
     throw new Error(
