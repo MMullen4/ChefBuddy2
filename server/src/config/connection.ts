@@ -18,17 +18,17 @@ console.log("process.env.MONGODB_URI:", process.env.MONGODB_URI);
 const db = async (): Promise<typeof mongoose.connection> => {
   console.log(" all env variables :", Object.keys(process.env));
 
-  // const MONGODB_URI = process.env.MONGODB_URI;
-  const MONGODB_URI =
-    process.env.MONGODB_URI ||
-    "mongodb+srv://chef_buddy:group3@cluster0.4rxzs1c.mongodb.net/chef_buddy?retryWrites=true&w=majority&appName=Cluster0";
-  console.log("MONGODB_URI:", MONGODB_URI);
+  const MONGODB_URI = process.env.MONGODB_URI;
+  // const MONGODB_URI =
+  //   process.env.MONGODB_URI ||
+  //   "mongodb+srv://chef_buddy:group3@cluster0.4rxzs1c.mongodb.net/chef_buddy?retryWrites=true&w=majority&appName=Cluster0";
+  // console.log("MONGODB_URI:", MONGODB_URI);
 
-  // if (!MONGODB_URI) {
-  //   throw new Error(
-  //     "❌ MONGODB_URI is not defined. Check your .env and path loading."
-  //   );
-  // }
+  if (!MONGODB_URI) {
+    throw new Error(
+      "❌ MONGODB_URI is not defined. Check your .env and path loading."
+    );
+  }
 
   try {
     console.log("MONGODB_URI right before connect:", MONGODB_URI);
