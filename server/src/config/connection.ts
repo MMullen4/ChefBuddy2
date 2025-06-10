@@ -24,11 +24,11 @@ const db = async (): Promise<typeof mongoose.connection> => {
     "mongodb+srv://chef_buddy:group3@cluster0.4rxzs1c.mongodb.net/chef_buddy?retryWrites=true&w=majority&appName=Cluster0";
   console.log("MONGODB_URI:", MONGODB_URI);
 
-  if (!MONGODB_URI) {
-    throw new Error(
-      "❌ MONGODB_URI is not defined. Check your .env and path loading."
-    );
-  }
+  // if (!MONGODB_URI) {
+  //   throw new Error(
+  //     "❌ MONGODB_URI is not defined. Check your .env and path loading."
+  //   );
+  // }
 
   try {
     console.log("MONGODB_URI right before connect:", MONGODB_URI);
