@@ -8,8 +8,8 @@ import mongoose from "mongoose";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load environment variables from the custom .env path
-const envPath = path.resolve(__dirname, "../../.env");
+// Load environment variables from the custom .env path in the root directory
+const envPath = path.resolve(__dirname, "../../../.env");
 dotenv.config({ path: envPath });
 
 console.log("ENV loaded from:", envPath);
