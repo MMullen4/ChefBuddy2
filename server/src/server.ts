@@ -39,9 +39,13 @@ const startApolloServer = async () => {
   await db();
 
   console.log('Node_ENV:', process.env.NODE_ENV);
-  console.log('Port:', process.env.PORT);
+  console.log('Port (raw):', process.env.PORT);
 
- const PORT = process.env.PORT || 8080;
+  const PORT = process.env.PORT;
+  
+  if (!PORT) {
+    throw new Error('❌ Railway did not inject port.');
+  }
 
 // if (process.env.NODE_ENV === "production" && !process.env.PORT) {
 //   throw new Error(
@@ -51,7 +55,7 @@ const startApolloServer = async () => {
 
   const app = express();
 
-  app.get('/health', (_req: Request, res: Response) => {
+  app.get('/health', (_req, res) => {
     res.status(200).send('OK');
   });
 
