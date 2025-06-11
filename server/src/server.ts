@@ -38,6 +38,9 @@ const startApolloServer = async () => {
   await server.start();
   await db();
 
+  console.log('Node_ENV:', process.env.NODE_ENV);
+  console.log('Port:', process.env.PORT);
+
  const PORT = process.env.PORT || 8080;
 
 // if (process.env.NODE_ENV === "production" && !process.env.PORT) {
