@@ -40,7 +40,7 @@ const startApolloServer = async () => {
 
  const PORT = process.env.PORT || 8080;
 
- if (process.env.NODE_ENV === "production" && PORT === "8080") {
+ if (process.env.NODE_ENV === "production" && PORT === 8080) {
    throw new Error(
      "❌ Railway requires binding to process.env.PORT, but fallback to 8080 was triggered."
    );
@@ -50,7 +50,7 @@ const startApolloServer = async () => {
 
   app.use(
     cors({
-      origin: ['https://chefbuddy2-production.up.railway.app/', 'http://localhost:3000'],
+      origin: ['https://chefbuddy2-production.up.railway.app', 'http://localhost:3000'],
       credentials: true
     })
   );
