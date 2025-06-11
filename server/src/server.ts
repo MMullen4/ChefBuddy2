@@ -38,7 +38,6 @@ const startApolloServer = async () => {
   await server.start();
   await db();
 
-  // const PORT = process.env.PORT || 8080;
  const PORT = process.env.PORT || 8080;
 
  if (process.env.NODE_ENV === "production" && PORT === "8080") {
@@ -47,12 +46,15 @@ const startApolloServer = async () => {
    );
  }
 
-  console.log('Server is running on port:', PORT);
-  console.log("PORT typeof:", typeof PORT);
-
   const app = express();
 
-  app.use(cors());
+  app.use(
+    cors({
+      origin: ['https://chefbuddy2-production.up.railway.app/', 'http://localhost:3000'],
+      credentials: true
+    })
+  );
+
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
