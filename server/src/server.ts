@@ -52,6 +52,18 @@ const startApolloServer = async () => {
 
   const app = express();
 
+  // Add this right after your app declaration
+  app.use(
+    (
+      req: express.Request,
+      _res: express.Response,
+      next: express.NextFunction
+    ): void => {
+      console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+      next();
+    }
+  );
+
   app.get("/health", (_req, res) => {
     res.status(200).send("OK");
   });
@@ -97,7 +109,6 @@ const startApolloServer = async () => {
       origin: [
         "https://chefbuddy2-production.up.railway.app",
         "http://localhost:3000",
-        "*",
       ],
       credentials: true,
     })
@@ -132,13 +143,30 @@ const startApolloServer = async () => {
 
   // ✅ Serve frontend in production
   if (process.env.NODE_ENV === "production") {
+    console.log(
+      "Servering static files from :",
+      path.join(__dirname, "../../client/dist")
+    );
     app.use(express.static(path.join(__dirname, "../../client/dist")));
     app.get("*", (_req: Request, res: Response) => {
       res.sendFile(path.join(__dirname, "../../client/dist/index.html"));
     });
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
+  // Add this right before app.listen
+  app.use(
+    (
+      err: Error,
+      _req: express.Request,
+      res: express.Response,
+      _next: express.NextFunction
+    ): void => {
+      console.error("Global error handler caught:", err);
+      res.status(500).send("Something broke!");
+    }
+  );
+
+  app.listen(PORT, "0.0.0.0", () => {
     console.log(`API server running on port ${PORT}!`);
   });
 };
