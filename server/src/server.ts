@@ -41,7 +41,7 @@ const startApolloServer = async () => {
   console.log('Node_ENV:', process.env.NODE_ENV);
   console.log('Port (raw):', process.env.PORT);
 
-  const PORT = process.env.PORT;
+  const PORT = process.env.PORT || 8080;
   
   if (!PORT) {
     throw new Error('❌ Railway did not inject port.');
@@ -103,7 +103,7 @@ const startApolloServer = async () => {
 
   app.listen(PORT, () => {
     console.log(`API server running on port ${PORT}!`);
-    console.log(`GraphQL ready at /graphql on port ${PORT}`);
+    
   });
 };
 
