@@ -9,7 +9,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 console.log('MONGODB_URI:', process.env.MONGODB_URI);
-console.log('PORT:', process.env.PORT);
+console.log('Inital Railway detected port :', process.env.PORT);
 
 import jwt from 'jsonwebtoken';
 
@@ -38,7 +38,18 @@ const startApolloServer = async () => {
   await server.start();
   await db();
 
-  const PORT = process.env.PORT || 8080;
+  // const PORT = process.env.PORT || 8080;
+  const PORT =
+    process.env.NODE_ENV === "production"
+      ? process.env.PORT
+      : process.env.PORT || 8080;
+
+  if (!PORT) {
+    throw new Error(
+      "❌ PORT is not defined! Railway requires process.env.PORT."
+    );
+  }
+  console.log('Server is running on port:', PORT);
   const app = express();
 
   app.use(cors());
