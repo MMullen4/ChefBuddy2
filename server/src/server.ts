@@ -39,16 +39,14 @@ const startApolloServer = async () => {
   await db();
 
   // const PORT = process.env.PORT || 8080;
-  const PORT =
-    process.env.NODE_ENV === "production"
-      ? process.env.PORT
-      : process.env.PORT || 8080;
+ const PORT = process.env.PORT || 8080;
 
-  if (!PORT) {
-    throw new Error(
-      "❌ PORT is not defined! Railway requires process.env.PORT."
-    );
-  }
+ if (process.env.NODE_ENV === "production" && PORT === "8080") {
+   throw new Error(
+     "❌ Railway requires binding to process.env.PORT, but fallback to 8080 was triggered."
+   );
+ }
+
   console.log('Server is running on port:', PORT);
   console.log("PORT typeof:", typeof PORT);
 
