@@ -51,6 +51,10 @@ const startApolloServer = async () => {
 
   const app = express();
 
+  app.get('/health', (_req: Request, res: Response) => {
+    res.status(200).send('OK');
+  });
+
   app.use(
     cors({
       origin: ['https://chefbuddy2-production.up.railway.app', 'http://localhost:3000'],
