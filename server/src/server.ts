@@ -8,9 +8,10 @@ if (process.env.NODE_ENV !== 'production') {
   dotenv.config({ path: path.resolve(__dirname, '../.env') });
 }
 
-import jwt from 'jsonwebtoken';
-
 console.log('MONGODB_URI:', process.env.MONGODB_URI);
+console.log('PORT:', process.env.PORT);
+
+import jwt from 'jsonwebtoken';
 
 import express, { Request, Response } from 'express';
 import cors from 'cors';
@@ -78,7 +79,7 @@ const startApolloServer = async () => {
 
   app.listen(PORT, () => {
     console.log(`API server running on port ${PORT}!`);
-    console.log(`GraphQL at http://localhost:${PORT}/graphql`);
+    console.log(`GraphQL ready at /graphql on port ${PORT}`);
   });
 };
 
