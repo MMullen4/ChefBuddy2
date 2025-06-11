@@ -40,11 +40,11 @@ const startApolloServer = async () => {
 
  const PORT = process.env.PORT || 8080;
 
- if (process.env.NODE_ENV === "production" && PORT === 8080) {
-   throw new Error(
-     "❌ Railway requires binding to process.env.PORT, but fallback to 8080 was triggered."
-   );
- }
+// if (process.env.NODE_ENV === "production" && !process.env.PORT) {
+//   throw new Error(
+//     "❌ Railway requires binding to process.env.PORT, but it's not defined."
+//   );
+// }
 
   const app = express();
 
