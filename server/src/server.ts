@@ -50,6 +50,8 @@ const startApolloServer = async () => {
     );
   }
   console.log('Server is running on port:', PORT);
+  console.log("PORT typeof:", typeof PORT);
+
   const app = express();
 
   app.use(cors());
