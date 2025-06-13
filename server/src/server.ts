@@ -55,6 +55,18 @@ const startApolloServer = async () => {
 
     const app = express();
 
+    // Add this near the top of your Express setup
+    app.use((_req, res, next) => {
+      res.setHeader("Connection", "keep-alive");
+      res.setHeader("Keep-Alive", "timeout=65");
+      next();
+    });
+
+    // Add this after your connection headers middleware
+    app.get("/", (_req, res) => {
+      res.status(200).send("ChefBuddy API is running");
+    });
+
     // Add this right after your app declaration
     app.use(
       (
@@ -105,13 +117,6 @@ const startApolloServer = async () => {
           message: err instanceof Error ? err.message : "Unknown error",
         });
       }
-    });
-
-    // Add this near the top of your Express setup
-    app.use((_req, res, next) => {
-      res.setHeader("Connection", "keep-alive");
-      res.setHeader("Keep-Alive", "timeout=65");
-      next();
     });
 
     app.use(
