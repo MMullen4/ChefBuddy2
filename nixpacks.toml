@@ -1,5 +1,5 @@
 [phases.setup]
-nixpkgs = ["nodejs", "nodePackages.npm"]
+nixpkgs = ["nodejs_18]
 
 [start]
-cmd = "npm run start"
+cmd = "npm start"
