@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server/dist/server.js",
     "build": "cd server && npm run build && cd ../client && npm run build",
-    "install": "cd server && npm i --omit=dev && cd ../client && npm i --omit=dev",
+    "install": "cd server && npm i && cd ../client && npm i --omit=dev",
     "lint": "cd client && npm run lint",
     "dev": "concurrently \"cd server && npm run watch\" \"wait-on tcp:3001 && cd client && npm run dev\""
   },
