@@ -50,7 +50,7 @@ const startApolloServer = async () => {
     console.log("Node_ENV:", process.env.NODE_ENV);
     console.log("Port (raw):", process.env.PORT);
 
-    const PORT = parseInt(process.env.PORT || '3001', 10);
+    const PORT = parseInt(process.env.PORT || "3001", 10);
     console.log("Port (parsed):", PORT);
 
     const app = express();
@@ -93,9 +93,9 @@ const startApolloServer = async () => {
           readyState: connectionState,
           mongodbUri: process.env.MONGODB_URI
             ? process.env.MONGODB_URI.replace(
-              /mongodb\+srv:\/\/([^:]+):[^@]+@/,
-              "mongodb+srv://$1:***@"
-            )
+                /mongodb\+srv:\/\/([^:]+):[^@]+@/,
+                "mongodb+srv://$1:***@"
+              )
             : "Not set",
         });
       } catch (err) {
@@ -105,6 +105,13 @@ const startApolloServer = async () => {
           message: err instanceof Error ? err.message : "Unknown error",
         });
       }
+    });
+
+    // Add this near the top of your Express setup
+    app.use((_req, res, next) => {
+      res.setHeader("Connection", "keep-alive");
+      res.setHeader("Keep-Alive", "timeout=65");
+      next();
     });
 
     app.use(
