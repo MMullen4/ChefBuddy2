@@ -41,23 +41,8 @@ const startApolloServer = async () => {
   console.log("Node_ENV:", process.env.NODE_ENV);
   console.log("Port (raw):", process.env.PORT);
 
-  // const PORT = parseInt(process.env.PORT || "8080", 10);
-  // console.log("Port (parsed):", PORT);
-
-  // // if (process.env.NODE_ENV === "production" && !process.env.PORT) {
-  // //   throw new Error(
-  // //     "❌ Railway requires binding to process.env.PORT, but it's not defined."
-  // //   );
-  // // }
-
-  const rawPort = process.env.PORT;
-  console.log("✅ RAW Railway-injected PORT:", rawPort);
-
-  if (!rawPort) {
-    throw new Error("❌ Railway did not inject PORT — cannot start.");
-  }
-
-  const PORT = parseInt(rawPort, 10);
+  const PORT = parseInt(process.env.PORT || '3001', 10);
+  console.log("Port (parsed):", PORT);
 
   const app = express();
 

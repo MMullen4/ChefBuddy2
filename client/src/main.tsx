@@ -18,8 +18,6 @@ import Recognition from './pages/Recognition';
 import HowTo from './pages/HowTo';
 import PrivateRoute from './components/PrivateRoute';
 
-
-
 const router = createBrowserRouter([
   {
     path: "/",
