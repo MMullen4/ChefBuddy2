@@ -77,12 +77,27 @@ const db = async (): Promise<typeof mongoose.connection> => {
   console.log("MONGODB_URI right before connect:", MONGODB_URI);
 
   try {
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(MONGODB_URI, {
+      serverSelectionTimeoutMS: 5000, // 5 seconds timeout
+      socketTimeoutMS: 45000, // 45 seconds timeout for socket operations
+    });
+
+    // event listeners for mongoose connection
+    mongoose.connection.on('error', (error) => {
+      console.error('MongoDB connection error:', error);
+    });
+    mongoose.connection.on('disconnected', () => {
+      console.log('MongoDB disconnected');
+    });
+
     console.log("✅ Database connected.");
     return mongoose.connection;
   } catch (error) {
     console.error("❌ Database connection error:", error);
-    throw new Error("Database connection failed.");
+    console.log('app will continue running even if database connection fails');
+    return mongoose.connection; // Return the connection object even if it fails
+
+    // throw new Error("Database connection failed.");
   }
 };
 
