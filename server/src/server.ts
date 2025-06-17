@@ -80,6 +80,7 @@ const startApolloServer = async () => {
     );
 
     app.get("/health", (_req, res) => {
+      console.log("Health check requested");
       res.status(200).send("OK");
     });
 
@@ -194,6 +195,5 @@ const startApolloServer = async () => {
     console.error("❌ Error starting Apollo Server:", error);
   }
 };
-
 
 startApolloServer();
