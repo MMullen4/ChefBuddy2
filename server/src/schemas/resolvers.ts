@@ -1,6 +1,9 @@
-
 import { Profile } from "../models/index.js";
-import { signToken, AuthenticationError, UserExistsError } from "../utils/auth.js";
+import {
+  signToken,
+  AuthenticationError,
+  UserExistsError,
+} from "../utils/auth.js";
 import FridgeItem from "../models/fridgeModel.js";
 import { IResolvers } from "@graphql-tools/utils";
 import { AuthRequest } from "../utils/auth";
@@ -41,19 +44,33 @@ const resolvers: IResolvers = {
       );
     },
     myRecipePath: async (_parent: any, _args: any, context: any) => {
-      if (!context.user) throw new AuthenticationError('You must be logged in.');
+      if (!context.user)
+        throw new AuthenticationError("You must be logged in.");
       return await getUserRecipePath(context.user._id);
     },
     myRecipeHistory: async (_parent, _args, context) => {
-      if (!context.user) throw new AuthenticationError('You must be logged in to view your recipe history.');
+      if (!context.user)
+        throw new AuthenticationError(
+          "You must be logged in to view your recipe history."
+        );
 
       return await getUserRecipeHistory(context.user._id);
     },
-    myFavoriteRecipes: async (_parent: any, _args: any, context: { user: any }) => {
-      if (!context.user) throw new AuthenticationError('You must be logged in to view your favorite recipes.');
-      return await RecipeHistory.find({ profile: context.user._id, favorite: true })
+    myFavoriteRecipes: async (
+      _parent: any,
+      _args: any,
+      context: { user: any }
+    ) => {
+      if (!context.user)
+        throw new AuthenticationError(
+          "You must be logged in to view your favorite recipes."
+        );
+      return await RecipeHistory.find({
+        profile: context.user._id,
+        favorite: true,
+      })
         .sort({ createdAt: -1 })
-        .populate('profile');
+        .populate("profile");
     },
     getFridge: async (_parent: any, _args: any, context: { user: any }) => {
       if (!context.user)
@@ -69,7 +86,7 @@ const resolvers: IResolvers = {
     },
     generateRecipes: async (
       _: any,
-      { ingredients, mealType }: { ingredients: string[]; mealType?: string },
+      { ingredients, mealType }: { ingredients: string[]; mealType?: string }
     ) => {
       // Validate the input ingredients
       if (!ingredients || ingredients.length === 0) {
@@ -77,9 +94,9 @@ const resolvers: IResolvers = {
       }
 
       const prompt = `
-        Suggest a list of ${mealType ?? 'relevant'} recipes based on the following ingredients: ${ingredients.join(
-        ", "
-      )}.
+        Suggest a list of ${
+          mealType ?? "relevant"
+        } recipes based on the following ingredients: ${ingredients.join(", ")}.
         Provide the recipes in JSON format, including the recipe name, ingredients, measurements, instructions, category, calories, and macros.
         Provide detailed instructions for each recipe, including preparation and cooking times.
         The recipes can include more ingredients than those provided, but should primarily use the given ingredients.
@@ -101,9 +118,11 @@ const resolvers: IResolvers = {
         messages: [
           {
             role: "system",
-            content: "Respond only with raw JSON. Do not include markdown formatting or explanation.",
+            content:
+              "Respond only with raw JSON. Do not include markdown formatting or explanation.",
           },
-          { role: "user", content: prompt }],
+          { role: "user", content: prompt },
+        ],
       });
 
       const result = response.choices[0].message?.content;
@@ -113,7 +132,7 @@ const resolvers: IResolvers = {
       }
 
       // clean markdown formatting if present
-      const cleaned = result.replace(/```json|```/g, '').trim();
+      const cleaned = result.replace(/```json|```/g, "").trim();
 
       let parsed;
       try {
@@ -128,7 +147,7 @@ const resolvers: IResolvers = {
         const nutrition = recipe.nutritionalInfo || {};
 
         const normalize = (value: any) =>
-          typeof value === 'string' ? value : `${value}`;
+          typeof value === "string" ? value : `${value}`;
 
         return {
           ...recipe,
@@ -177,8 +196,12 @@ const resolvers: IResolvers = {
       return { token, profile };
     },
 
-    saveRecipe: async (_, { mealType, title, ingredients, instructions }, context: AuthRequest ) => {
-      console.log("context", context );
+    saveRecipe: async (
+      _,
+      { mealType, title, ingredients, instructions },
+      context: AuthRequest
+    ) => {
+      console.log("context", context);
       if (!context.user) throw new AuthenticationError("Not authenticated");
       const newRecipe = await RecipeHistory.create({
         mealType,
@@ -202,13 +225,13 @@ const resolvers: IResolvers = {
       const updatedRecipe = await RecipeHistory.findByIdAndUpdate(
         recipeId,
         { $push: { comments: comment } },
-          { new: true }
+        { new: true }
       );
-      
+
       if (!updatedRecipe) throw new Error("Recipe not found");
       return updatedRecipe;
-     },
-     
+    },
+
     addFridgeItem: async (_, { name }, context: { user: any }) => {
       if (!context.user)
         throw new AuthenticationError(
@@ -248,7 +271,11 @@ const resolvers: IResolvers = {
       return deletedItem;
     },
 
-    toggleFavorite: async (_: any, { recipeId }: { recipeId: string }, context: AuthRequest ) => {
+    toggleFavorite: async (
+      _: any,
+      { recipeId }: { recipeId: string },
+      context: AuthRequest
+    ) => {
       if (!context.user) throw new AuthenticationError("Not authenticated");
 
       const recipe = await RecipeHistory.findById(recipeId);
@@ -268,7 +295,7 @@ const resolvers: IResolvers = {
         : { $addToSet: { favorites: recipeId } };
 
       await Profile.findByIdAndUpdate(userId, update, { new: true });
-      
+
       // Update the recipe's favorite status
       const updatedRecipe = await RecipeHistory.findByIdAndUpdate(
         recipeId,

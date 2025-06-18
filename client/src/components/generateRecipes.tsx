@@ -78,7 +78,7 @@ const RecipeGenerator = () => {
   const handleSubmit = () => {
     if (ingredients.length === 0) {
       alert('Add at least one ingredient.')
-
+      
       return
     }
     console.log('Submitting ingredients:', ingredients)
