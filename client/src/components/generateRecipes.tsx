@@ -41,8 +41,8 @@ const RecipeGenerator = () => {
         const updatedFavorites = alreadyFavorited
           ? existing.myRecipeHistory.filter(
               (r: Recipe) => r._id !== toggleFavorite._id
-            )
-          : [...existing.myRecipeHistory, toggleFavorite]
+            ) 
+          : [...existing.myRecipeHistory, toggleFavorite];
 
         cache.writeQuery({
           query: GET_FAVORITE_RECIPES,
@@ -72,7 +72,7 @@ const RecipeGenerator = () => {
   // Function to remove an ingredient
   const removeIngredient = (item: string) => {
     setIngredients(ingredients.filter(i => i !== item))
-  }
+  };
 
   // Function to handle form submission
   const handleSubmit = () => {
@@ -91,7 +91,7 @@ const RecipeGenerator = () => {
           return;
         }
         console.log('Recipes fetched:', response.data.generateRecipes);
-
+      
         const recipes = response.data?.generateRecipes || [];
         if (recipes && recipes.length > 0) {
           recipes.forEach(

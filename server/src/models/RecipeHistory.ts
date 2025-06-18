@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface IComment {
     username: string;
@@ -34,4 +34,7 @@ const RecipeHistorySchema = new Schema<IRecipeHistory>({
     }]
 });
 
-export default mongoose.model<IRecipeHistory>('RecipeHistory', RecipeHistorySchema);
+export default mongoose.model<IRecipeHistory>(
+  "RecipeHistory",
+  RecipeHistorySchema
+);

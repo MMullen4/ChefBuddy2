@@ -41,7 +41,8 @@ const resolvers: IResolvers = {
       );
     },
     myRecipePath: async (_parent: any, _args: any, context: any) => {
-      if (!context.user) throw new AuthenticationError('You must be logged in.');
+      if (!context.user)
+        throw new AuthenticationError("You must be logged in.");
       return await getUserRecipePath(context.user._id);
     },
     myRecipeHistory: async (_parent, _args, context) => {
@@ -49,11 +50,21 @@ const resolvers: IResolvers = {
 
       return await getUserRecipeHistory(context.user._id);
     },
-    myFavoriteRecipes: async (_parent: any, _args: any, context: { user: any }) => {
-      if (!context.user) throw new AuthenticationError('You must be logged in to view your favorite recipes.');
-      return await RecipeHistory.find({ profile: context.user._id, favorite: true })
+    myFavoriteRecipes: async (
+      _parent: any,
+      _args: any,
+      context: { user: any }
+    ) => {
+      if (!context.user)
+        throw new AuthenticationError(
+          "You must be logged in to view your favorite recipes."
+        );
+      return await RecipeHistory.find({
+        profile: context.user._id,
+        favorite: true,
+      })
         .sort({ createdAt: -1 })
-        .populate('profile');
+        .populate("profile");
     },
     getFridge: async (_parent: any, _args: any, context: { user: any }) => {
       if (!context.user)
@@ -101,9 +112,11 @@ const resolvers: IResolvers = {
         messages: [
           {
             role: "system",
-            content: "Respond only with raw JSON. Do not include markdown formatting or explanation.",
+            content:
+              "Respond only with raw JSON. Do not include markdown formatting or explanation.",
           },
-          { role: "user", content: prompt }],
+          { role: "user", content: prompt },
+        ],
       });
 
       const result = response.choices[0].message?.content;
@@ -113,7 +126,7 @@ const resolvers: IResolvers = {
       }
 
       // clean markdown formatting if present
-      const cleaned = result.replace(/```json|```/g, '').trim();
+      const cleaned = result.replace(/```json|```/g, "").trim();
 
       let parsed;
       try {
@@ -128,7 +141,7 @@ const resolvers: IResolvers = {
         const nutrition = recipe.nutritionalInfo || {};
 
         const normalize = (value: any) =>
-          typeof value === 'string' ? value : `${value}`;
+          typeof value === "string" ? value : `${value}`;
 
         return {
           ...recipe,
@@ -177,8 +190,12 @@ const resolvers: IResolvers = {
       return { token, profile };
     },
 
-    saveRecipe: async (_, { mealType, title, ingredients, instructions }, context: AuthRequest ) => {
-      console.log("context", context );
+    saveRecipe: async (
+      _,
+      { mealType, title, ingredients, instructions },
+      context: AuthRequest
+    ) => {
+      console.log("context", context);
       if (!context.user) throw new AuthenticationError("Not authenticated");
       const newRecipe = await RecipeHistory.create({
         mealType,
@@ -207,8 +224,8 @@ const resolvers: IResolvers = {
       
       if (!updatedRecipe) throw new Error("Recipe not found");
       return updatedRecipe;
-     },
-     
+    },
+
     addFridgeItem: async (_, { name }, context: { user: any }) => {
       if (!context.user)
         throw new AuthenticationError(

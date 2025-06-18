@@ -31,7 +31,7 @@ interface DecodedUserPayload extends jwt.JwtPayload {
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
 });
 
 const startApolloServer = async () => {

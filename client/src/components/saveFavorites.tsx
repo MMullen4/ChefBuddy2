@@ -78,7 +78,7 @@ const SaveFavorites: React.FC = () => {
       setActiveRecipeId(null);
     },
   });
-
+  
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
