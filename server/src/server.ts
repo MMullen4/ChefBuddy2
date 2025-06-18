@@ -62,11 +62,6 @@ const startApolloServer = async () => {
       next();
     });
 
-    // // Add this after your connection headers middleware
-    // app.get("/", (_req, res) => {
-    //   res.status(200).send("ChefBuddy API is running");
-    // });
-
     // Add this right after your app declaration
     app.use(
       (

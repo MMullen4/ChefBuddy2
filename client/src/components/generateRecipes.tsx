@@ -11,9 +11,11 @@ interface Recipe {
   instructions: string[]
 }
 
-const RecipeGenerator = () => {
+// hook to generate recipes based on ingredients
+const RecipeGenerator = () => { 
   const [ingredient, setIngredient] = useState('')
   const [ingredients, setIngredients] = useState<string[]>([])
+  const [mealType, setMealType] = useState<string>('lunch') // to store the meal type, and set a default value of lunch
   const [favoritesMap, setFavoritesMap] = useState<{ [key: string]: boolean }>(
     {}
   )
@@ -81,7 +83,7 @@ const RecipeGenerator = () => {
     }
     console.log('Submitting ingredients:', ingredients)
 
-    getRecipes({ variables: { ingredients } })
+    getRecipes({ variables: { ingredients, mealType: mealType || undefined } })
       .then(response => {
         
         if (!response?.data?.generateRecipes) {
@@ -165,18 +167,18 @@ const RecipeGenerator = () => {
       {/* Ingredient Input */}
       <div>
         <input
-          type='text'
+          type="text"
           value={ingredient}
-          placeholder='Enter an ingredient'
-          onChange={e => setIngredient(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && addIngredient()}
+          placeholder="Enter an ingredient"
+          onChange={(e) => setIngredient(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && addIngredient()}
         />
         <button
           onClick={addIngredient}
           style={{
-            padding: '2px 8px',
-            fontSize: '1.5rem',
-            marginLeft: '5px'
+            padding: "2px 8px",
+            fontSize: "1.5rem",
+            marginLeft: "5px",
           }}
         >
           Add
@@ -185,28 +187,28 @@ const RecipeGenerator = () => {
 
       {/* Ingredient List */}
       {ingredients.length > 0 && (
-        <div style={{ margin: '10px 0' }}>
-          {ingredients.map(item => (
+        <div style={{ margin: "10px 0" }}>
+          {ingredients.map((item) => (
             <span
               key={item}
               style={{
-                display: 'inline-block',
-                padding: '3px 5px',
-                margin: '5px',
-                background: '#f0f0f0',
-                borderRadius: '12px'
+                display: "inline-block",
+                padding: "3px 5px",
+                margin: "5px",
+                background: "#f0f0f0",
+                borderRadius: "12px",
               }}
             >
               {item}
               <button
                 onClick={() => removeIngredient(item)}
                 style={{
-                  marginLeft: '5px',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontSize: '1.5rem',
-                  color: '#ff0000'
+                  marginLeft: "5px",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "1.5rem",
+                  color: "#ff0000",
                 }}
               >
                 &times;
@@ -216,41 +218,73 @@ const RecipeGenerator = () => {
         </div>
       )}
 
+      {/* Meal Type Dropdown */}
+      <div style={{ marginTop: "10px" }}>
+        <label
+          htmlFor="mealType"
+          style={{
+            fontSize: "1rem",
+            fontWeight: "bold",
+            marginRight: "10px",
+            display: "inline-block",
+          }}
+        >
+          Choose a meal type:
+        </label>
+        <select
+          id="mealType"
+          value={mealType}
+          onChange={(e) => setMealType(e.target.value)}
+          style={{
+            padding: "6px 12px",
+            fontSize: "1rem",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+          }}
+        >
+          <option value="">Any</option>
+          <option value="breakfast">Breakfast</option>
+          <option value="lunch">Lunch</option>
+          <option value="dinner">Dinner</option>
+          <option value="dessert">Dessert</option>
+        </select>
+      </div>
+
       {/* Submit Button */}
       <button
         onClick={handleSubmit}
         style={{
-          padding: '6px 12px',
-          fontSize: '1rem',
-          backgroundColor: '#4CAF50',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer',
-          marginTop: '10px',
-          transition: 'background-color 0.3s'
+          padding: "6px 12px",
+          fontSize: "1rem",
+          backgroundColor: "#4CAF50",
+          color: "white",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+          marginTop: "10px",
+          transition: "background-color 0.3s",
         }}
       >
         👨‍🍳 Let's Cook 🥄
       </button>
 
       {/* Results */}
-      {loading && <p className='mt-4'>Finding recipes...</p>}
+      {loading && <p className="mt-4">Finding recipes...</p>}
       {/* error && <p className="mt-4 text-red-500">Error: {error.message}</p> */}
       {error && (
-        <p className='mt-4 text-red-500'>
-          {error.message.includes('not valid JSON')
+        <p className="mt-4 text-red-500">
+          {error.message.includes("not valid JSON")
             ? `SORRY ! There seems to be a glitch in the matrix! Please remove any weird ingredients and/or resubmit form.`
             : `Error: ${error.message}`}
         </p>
       )}
       {existingRecipes && (
-        <div className='mt-4'>
-          {(Object.values(existingRecipes) as Recipe[]).map(recipe => (
+        <div className="mt-4">
+          {(Object.values(existingRecipes) as Recipe[]).map((recipe) => (
             <div key={recipe._id}>
               <h2>{recipe.title}</h2>
               <p>
-                <strong>Ingredients:</strong> {recipe.ingredients.join(', ')}
+                <strong>Ingredients:</strong> {recipe.ingredients.join(", ")}
               </p>
               <p>
                 <strong>Instructions:</strong> {recipe.instructions}
@@ -258,20 +292,20 @@ const RecipeGenerator = () => {
               <button
                 onClick={() => handleToggleFavorite(recipe._id)}
                 style={{
-                  fontSize: '1.5rem',
-                  cursor: 'pointer',
-                  background: 'none',
-                  border: 'none'
+                  fontSize: "1.5rem",
+                  cursor: "pointer",
+                  background: "none",
+                  border: "none",
                 }}
               >
-                {favoritesMap[recipe._id] ? '❤️' : '🤍'}
+                {favoritesMap[recipe._id] ? "❤️" : "🤍"}
               </button>
             </div>
           ))}
         </div>
       )}
     </div>
-  )
+  );
 }
 
 export default RecipeGenerator

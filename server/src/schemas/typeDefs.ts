@@ -69,7 +69,7 @@ type RecipeHistory {
     myFavoriteRecipes: [RecipeHistory]
     getRecipeById(_id: ID!): RecipeHistory
     getRecipeByIngredient(ingredient: String!): [RecipeHistory]
-    generateRecipes(ingredients: [String!]!): [RecipeHistory!]!
+    generateRecipes(ingredients: [String!]!, mealType: String): [RecipeHistory!]!
     getFridge: [FridgeItem]!
   }
 

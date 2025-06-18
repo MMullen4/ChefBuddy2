@@ -32,13 +32,14 @@ export const QUERY_ME = gql`
 `;
 
 export const GENERATE_RECIPES = gql`
-  query GenerateRecipes($ingredients: [String!]!) {
-    generateRecipes(ingredients: $ingredients) {
+  query GenerateRecipes($ingredients: [String!]!, $mealType: String) {
+    generateRecipes(ingredients: $ingredients, mealType: $mealType) {
       _id
       title
       ingredients
       instructions
       favorite
+      mealType
     }
   }
 `;

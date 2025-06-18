@@ -44,8 +44,9 @@ const resolvers: IResolvers = {
       if (!context.user) throw new AuthenticationError('You must be logged in.');
       return await getUserRecipePath(context.user._id);
     },
-    myRecipeHistory: async (_parent: any, _args: any, context: { user: any }) => {
+    myRecipeHistory: async (_parent, _args, context) => {
       if (!context.user) throw new AuthenticationError('You must be logged in to view your recipe history.');
+
       return await getUserRecipeHistory(context.user._id);
     },
     myFavoriteRecipes: async (_parent: any, _args: any, context: { user: any }) => {
@@ -68,22 +69,19 @@ const resolvers: IResolvers = {
     },
     generateRecipes: async (
       _: any,
-      { ingredients }: { ingredients: string[] }
+      { ingredients, mealType }: { ingredients: string[]; mealType?: string },
     ) => {
-      // console.log(
-      //   "generateRecipes resolver called with ingredients:",
-      //   ingredients
-      // );
+      // Validate the input ingredients
       if (!ingredients || ingredients.length === 0) {
         throw new Error("Please provide a list of ingredients.");
       }
 
       const prompt = `
-        Suggest a list of recipes based on the following ingredients: ${ingredients.join(
+        Suggest a list of ${mealType ?? 'relevant'} recipes based on the following ingredients: ${ingredients.join(
         ", "
       )}.
-        Please provide the recipes in JSON format, including the recipe name, ingredients, measurements, instructions, category, calories, and macros.
-        Please provide detailed instructions for each recipe, including preparation and cooking times.
+        Provide the recipes in JSON format, including the recipe name, ingredients, measurements, instructions, category, calories, and macros.
+        Provide detailed instructions for each recipe, including preparation and cooking times.
         The recipes can include more ingredients than those provided, but should primarily use the given ingredients.
         Each recipe should include the following fields:
         - title: The name of the recipe
@@ -107,8 +105,6 @@ const resolvers: IResolvers = {
           },
           { role: "user", content: prompt }],
       });
-
-      // console.log("OpenAI Raw Response:", JSON.stringify(response, null, 2));
 
       const result = response.choices[0].message?.content;
 
