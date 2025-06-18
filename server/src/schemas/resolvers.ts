@@ -95,9 +95,14 @@ const resolvers: IResolvers = {
 
       const prompt = `
         Suggest a list of ${
-          mealType ?? "relevant"
-        } recipes based on the following ingredients: ${ingredients.join(", ")}.
-        Provide the recipes in JSON format, including the recipe name, ingredients, measurements, instructions, category, calories, and macros.
+          mealType ? `"${mealType}"` : "relevant"
+        } recipes based on the following ingredients: ${ingredients.join(
+        ", "
+      )}.  Only return recipes that would typically be served as ${
+        mealType ? `"{mealType}"` : "appropriate"
+      } meals.
+        Provide the recipes in JSON format, including the recipe name, ingredients, measurements, instructions, category and calories.   Each recipe must be clearly categorized under "category" using one of: breakfast, lunch, dinner, or dessert.
+        If a mealType is provided, all recipes must strictly match that category.
         Provide detailed instructions for each recipe, including preparation and cooking times.
         The recipes can include more ingredients than those provided, but should primarily use the given ingredients.
         Each recipe should include the following fields:
