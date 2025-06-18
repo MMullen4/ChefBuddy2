@@ -219,11 +219,11 @@ const RecipeGenerator = () => {
       )}
 
       {/* Meal Type Dropdown */}
-      <div style={{ marginTop: "10px" }}>
+      <div style={{ marginTop: "10px", display: "block" }}>
         <label
           htmlFor="mealType"
           style={{
-            fontSize: "1rem",
+            fontSize: "1.5rem",
             fontWeight: "bold",
             marginRight: "10px",
             display: "inline-block",
@@ -236,10 +236,13 @@ const RecipeGenerator = () => {
           value={mealType}
           onChange={(e) => setMealType(e.target.value)}
           style={{
-            padding: "6px 12px",
-            fontSize: "1rem",
+            padding: "5px 10px",
+            fontSize: "1.5rem",
             borderRadius: "4px",
-            border: "1px solid #ccc",
+            border: "2px solid #333", // More visible border
+            backgroundColor: "#fff", // Explicit background color
+            display: "inline-block", // Ensure it's displayed inline
+            minWidth: "120px", // Give it a minimum width
           }}
         >
           <option value="">Any</option>
@@ -255,7 +258,7 @@ const RecipeGenerator = () => {
         onClick={handleSubmit}
         style={{
           padding: "6px 12px",
-          fontSize: "1rem",
+          fontSize: "1.2rem",
           backgroundColor: "#4CAF50",
           color: "white",
           border: "none",

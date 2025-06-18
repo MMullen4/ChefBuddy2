@@ -1,7 +1,7 @@
-import React from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { GET_FAVORITE_RECIPES } from '../utils/queries';
-import { TOGGLE_FAVORITE, ADD_COMMENT } from '../utils/mutations';
+import React from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_FAVORITE_RECIPES } from "../utils/queries";
+import { TOGGLE_FAVORITE, ADD_COMMENT } from "../utils/mutations";
 
 // type definition for Recipe to ensure type safety
 interface Comment {
@@ -23,20 +23,33 @@ interface Recipe {
   comments: Comment[];
 }
 // function to fetch favorite recipes and toggle their favorite status
+// state declarations to manage search term, filter, comment text, and active recipe ID
 const SaveFavorites: React.FC = () => {
-  const [searchTerm, setSearchTerm] = React.useState<string>('');
-  const [filter] = React.useState<string>('All');
-  const [commentText, setCommentText] = React.useState<string>('');
-  const [activeRecipeId, setActiveRecipeId] = React.useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = React.useState<string>("");
+  const [filter] = React.useState<string>("All");
+  const [commentText, setCommentText] = React.useState<string>("");
+  const [activeRecipeId, setActiveRecipeId] = React.useState<string | null>(
+    null
+  );
+
+  // ref for comment input to focus it when needed
+  const commentInputRef = React.useRef<HTMLTextAreaElement>(null);
+
+  // focus the comment input when activeRecipeId changes
+  React.useEffect(() => {
+    if (activeRecipeId && commentInputRef.current) {
+      commentInputRef.current.focus();
+    }
+  }, [activeRecipeId]);
 
   // useQuery to fetch favorite recipes
   const { loading, error, data, refetch } = useQuery(GET_FAVORITE_RECIPES);
-  
+
   // useMutation to toggle favorite status of a recipe
-    const [toggleFavorite] = useMutation(TOGGLE_FAVORITE, {
-        onCompleted: () => refetch(),
-    });
-  
+  const [toggleFavorite] = useMutation(TOGGLE_FAVORITE, {
+    onCompleted: () => refetch(),
+  });
+
   // useMutation to add a comment to a recipe
   const [addComment] = useMutation(ADD_COMMENT, {
     update(cache, { data: { addComment } }) {
@@ -45,7 +58,7 @@ const SaveFavorites: React.FC = () => {
 
       // get the cache ID for the specific recipe
       const cacheId = cache.identify({
-        __typename: 'RecipeHistory',
+        __typename: "RecipeHistory",
         _id: recipeId,
       });
 
@@ -61,18 +74,20 @@ const SaveFavorites: React.FC = () => {
     },
     onCompleted: () => {
       refetch();
-      setCommentText('');
+      setCommentText("");
       setActiveRecipeId(null);
     },
   });
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
-    const favoriteRecipes = (data?.myRecipeHistory || [])
+  const favoriteRecipes = (data?.myRecipeHistory || [])
     .filter((recipe: Recipe) => recipe.favorite)
     .filter((recipe: Recipe) =>
-      filter === 'All' ? true : recipe.mealType?.toLowerCase() === filter.toLowerCase()
+      filter === "All"
+        ? true
+        : recipe.mealType?.toLowerCase() === filter.toLowerCase()
     )
     .filter((recipe: Recipe) => {
       const term = searchTerm.toLowerCase();
@@ -80,28 +95,32 @@ const SaveFavorites: React.FC = () => {
         recipe.title?.toLowerCase().includes(term) ||
         recipe.ingredients?.some((ing) => ing.toLowerCase().includes(term)) ||
         recipe.response?.toLowerCase().includes(term) ||
-        recipe.instructions?.some((inst) => inst.toLowerCase().includes(term)) ||
+        recipe.instructions?.some((inst) =>
+          inst.toLowerCase().includes(term)
+        ) ||
         recipe.mealType?.toLowerCase().includes(term)
       );
     });
 
   // return the list of favorite recipes with filtering options
-    return (
-        <div className="p-4">
-          <h2 className="text-3xl font-extrabold text-center mb-4">Your ❤️ Recipes</h2>
-          <div className="mb-4">
-  <input
-    type="text"
-    placeholder="Search by keyword or ingredient..."
-    className="px-4 py-2 border rounded w-full"
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-  />
-</div>
-          {favoriteRecipes.length === 0 ? (
-            <p>No favorites yet!</p>
-          ) : (
-            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  return (
+    <div className="p-4">
+      <h2 className="text-3xl font-extrabold text-center mb-4">
+        Your ❤️ Recipes
+      </h2>
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search by keyword or ingredient..."
+          className="px-4 py-2 border rounded w-full"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+      {favoriteRecipes.length === 0 ? (
+        <p>No favorites yet!</p>
+      ) : (
+        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {favoriteRecipes.map((recipe: Recipe) => (
             <li key={recipe._id} className="border p-4 rounded shadow bg-white">
               <h3 className="text-xl font-extrabold mb-2">
@@ -128,15 +147,21 @@ const SaveFavorites: React.FC = () => {
                   <ul className="mt-2">
                     {recipe.comments.map((comment, index) => {
                       // debugging: log the comment to check its structure
-                      console.log('comment date debug:', {
+                      console.log("comment date debug:", {
                         rawDate: comment.createdAt,
-                        isValid: comment.createdAt && !isNaN(new Date(comment.createdAt).getTime()),
-                        parsedDate: comment.createdAt ? new Date(comment.createdAt) : null,
-                      })
+                        isValid:
+                          comment.createdAt &&
+                          !isNaN(new Date(comment.createdAt).getTime()),
+                        parsedDate: comment.createdAt
+                          ? new Date(comment.createdAt)
+                          : null,
+                      });
                       // ensure createdAt is a valid date annd convert it to a readable format
-                      const createdAt =
-                        comment.createdAt ? new Date(parseInt(comment.createdAt)).toLocaleDateString()
-                          : "Unknown Date";
+                      const createdAt = comment.createdAt
+                        ? new Date(
+                            parseInt(comment.createdAt)
+                          ).toLocaleDateString()
+                        : "Unknown Date";
                       return (
                         <li key={index} className="border-b pb-2 mb-2">
                           <p className="text-sm">{comment.text}</p>
@@ -153,6 +178,7 @@ const SaveFavorites: React.FC = () => {
               {activeRecipeId === recipe._id ? (
                 <div className="mt-4">
                   <textarea
+                    ref={commentInputRef}
                     className="w-full p-2 border rounded"
                     placeholder="Add a comment..."
                     value={commentText}
@@ -210,7 +236,7 @@ const SaveFavorites: React.FC = () => {
               )}
 
               <button
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                className="mt-2 px-3 py-1 bg-blue-500 text-white rounded"
                 onClick={() =>
                   toggleFavorite({ variables: { recipeId: recipe._id } })
                 }
