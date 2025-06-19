@@ -104,17 +104,24 @@ const SaveFavorites: React.FC = () => {
 
   // return the list of favorite recipes with filtering options
   return (
-    <div className="p-4">
-      <h2 className="text-3xl font-extrabold text-center mb-4">
+    <div className="container">
+      <h2 className="center-align deep-orange-text">
         Your ❤️ Recipes
       </h2>
-      <div className="mb-4">
+      <div className="input-field col s12">
         <input
           type="text"
-          placeholder="Search by keyword or ingredient..."
-          className="px-4 py-2 border rounded w-full"
+          placeholder="🔍 Search by Keyword or Ingredient here!"
+          className="input-field col s12"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          style={{
+            fontSize: "22px",
+            border: "2px solid #ff5722",
+            borderRadius: "4px",
+            padding: "5px",
+            "::placeholder": { color: "#ff5722" },
+          }}
         />
       </div>
       {favoriteRecipes.length === 0 ? (
