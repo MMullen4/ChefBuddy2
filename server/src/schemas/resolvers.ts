@@ -99,7 +99,7 @@ const resolvers: IResolvers = {
         } recipes based on the following ingredients: ${ingredients.join(
         ", "
       )}.  Only return recipes that would typically be served as ${
-        mealType ? `"{mealType}"` : "appropriate"
+        mealType ? `"${mealType}"` : "appropriate"
       } meals.
         Provide the recipes in JSON format, including the recipe name, ingredients, measurements, instructions, category and calories.   Each recipe must be clearly categorized under "category" using one of: breakfast, lunch, dinner, or dessert.
         If a mealType is provided, all recipes must strictly match that category.
