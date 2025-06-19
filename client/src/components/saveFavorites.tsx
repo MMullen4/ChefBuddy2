@@ -120,7 +120,6 @@ const SaveFavorites: React.FC = () => {
             border: "2px solid #ff5722",
             borderRadius: "4px",
             padding: "5px",
-            "::placeholder": { color: "#ff5722" },
           }}
         />
       </div>
